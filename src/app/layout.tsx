@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
-import ThemeSwitcher from '@/components/ThemeSwitcher';
 import { ThemeProvider } from "@/components/theme-provider"
+import ThemeSwitcher from "@/components/ThemeSwitcher";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
@@ -41,4 +41,5 @@ export default function RootLayout({
     </html>
   );
 }
+
 
