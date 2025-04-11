@@ -1,4 +1,4 @@
-"use client";
+use client";
 
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
@@ -30,3 +30,4 @@ const ThemeSwitcher = () => {
 };
 
 export default ThemeSwitcher;
+

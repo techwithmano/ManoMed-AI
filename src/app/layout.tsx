@@ -1,11 +1,11 @@
-import type {Metadata} from 'next';
-import {Geist, Geist_Mono} from 'next/font/google';
+import type { Metadata } from 'next';
+import { GeistSans, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import ThemeSwitcher from '@/components/ThemeSwitcher';
 import { ThemeProvider } from "@/components/theme-provider"
 
-const geistSans = Geist({
+const geistSans = GeistSans({
   variable: '--font-geist-sans',
   subsets: ['latin'],
 });
@@ -44,3 +44,4 @@ export default function RootLayout({
     </html>
   );
 }
+
