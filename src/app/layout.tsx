@@ -36,10 +36,14 @@ export default function RootLayout({
           </div>
         
         {children}
+              <footer className="flex items-center justify-center w-full py-4 text-sm text-gray-500">
+                  © 2025 ManoMed AI. All rights reserved.
+              </footer>
         <Toaster />
           </ThemeProvider>
       </body>
     </html>
   );
 }
+
 
