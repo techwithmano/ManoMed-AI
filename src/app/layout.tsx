@@ -31,7 +31,9 @@ export default function RootLayout({
               disableTransitionOnChange
           >
         
+          <div className="absolute top-4 right-4">
           <ThemeSwitcher />
+          </div>
         
         {children}
         <Toaster />
@@ -40,3 +42,4 @@ export default function RootLayout({
     </html>
   );
 }
+
