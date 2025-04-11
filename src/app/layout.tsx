@@ -1,11 +1,11 @@
 import type {Metadata} from 'next';
-import {Inter} from 'next/font/google';
 import './globals.css';
 import {Toaster} from '@/components/ui/toaster';
-import {ThemeProvider} from "@/components/theme-provider"
+import {ThemeProvider} from "@/components/theme-provider";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
+import { Inter } from 'next/font/google';
 
-const inter = Inter({subsets: ['latin'], variable: '--font-inter'});
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'ManoMed AI',
@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">
+      <body className={inter.className}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -41,4 +41,3 @@ export default function RootLayout({
     </html>
   );
 }
-
