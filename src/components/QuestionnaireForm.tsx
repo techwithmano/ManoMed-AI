@@ -55,7 +55,7 @@ export const QuestionnaireForm: React.FC<QuestionnaireFormProps> = ({ questions,
             Cancel
           </Button>
           <Button onClick={handleSubmit} disabled={isLoading}>
-            {isLoading ? "Submit Answers" : "Submitting..."}
+            {isLoading ? "Submitting..." : "Submit Answers"}
           </Button>
         </div>
       </div>
