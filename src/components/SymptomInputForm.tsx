@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface SymptomInputFormProps {
   onAnalysis: (symptoms: string, medicalHistory: string) => void;
@@ -13,14 +14,16 @@ export const SymptomInputForm: React.FC<SymptomInputFormProps> = ({ onAnalysis }
   const [symptoms, setSymptoms] = useState("");
   const [medicalHistory, setMedicalHistory] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
   const handleAnalysis = async () => {
     setIsLoading(true);
     try {
       onAnalysis(symptoms, medicalHistory);
-    } catch (error) {
+        setError(null);
+    } catch (error: any) {
       console.error("Error during symptom analysis:", error);
-      // Handle error (e.g., display an error message)
+      setError("Failed to analyze symptoms. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -29,6 +32,12 @@ export const SymptomInputForm: React.FC<SymptomInputFormProps> = ({ onAnalysis }
   return (
     <div className="mb-8 p-8 rounded-2xl bg-secondary/10 shadow-lg">
       <h2 className="text-2xl font-semibold mb-4 text-primary">Enter Your Symptoms</h2>
+        {error && (
+            <Alert variant="destructive">
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+            </Alert>
+        )}
       <div className="grid gap-6">
         <div>
           <label htmlFor="symptoms" className="block text-sm font-medium text-foreground mb-2">

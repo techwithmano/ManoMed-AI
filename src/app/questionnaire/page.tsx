@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { generateQuestionnaire } from "@/ai/flows/generate-questionnaire-flow";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Loader2 } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function QuestionnairePage() {
   const searchParams = useSearchParams();
@@ -14,11 +15,19 @@ export default function QuestionnairePage() {
   const medicalHistory = searchParams.get('medicalHistory') || '';
 
   const [questions, setQuestions] = useState<string[] | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchQuestions = async () => {
-      const questionnaire = await generateQuestionnaire({ symptoms, medicalHistory });
-      setQuestions(questionnaire);
+      try {
+        const questionnaire = await generateQuestionnaire({ symptoms, medicalHistory });
+        setQuestions(questionnaire);
+        setError(null); // Clear any previous error
+      } catch (e: any) {
+        console.error("Error generating questionnaire:", e);
+        setError("Failed to generate questionnaire. Please try again.");
+        setQuestions(null);
+      }
     };
 
     fetchQuestions();
@@ -32,6 +41,17 @@ export default function QuestionnairePage() {
   const handleCancel = () => {
     router.push('/');
   };
+
+    if (error) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-screen p-8">
+                <Alert variant="destructive">
+                    <AlertTitle>Error</AlertTitle>
+                    <AlertDescription>{error}</AlertDescription>
+                </Alert>
+            </div>
+        );
+    }
 
   if (!questions) {
     return (
