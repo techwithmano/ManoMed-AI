@@ -9,10 +9,12 @@
 
 import {ai} from '@/ai/ai-instance';
 import {z} from 'genkit';
+import {generateQuestionnaire} from "@/ai/flows/generate-questionnaire-flow";
 
 const SymptomAnalysisInputSchema = z.object({
   symptoms: z.string().describe('A comma-separated list of symptoms the user is experiencing.'),
   medicalHistory: z.string().optional().describe('Relevant medical history of the user.'),
+  questionnaireAnswers: z.string().optional().describe('Answers to the generated questionnaire.'),
 });
 export type SymptomAnalysisInput = z.infer<typeof SymptomAnalysisInputSchema>;
 
@@ -37,6 +39,7 @@ const symptomAnalysisPrompt = ai.definePrompt({
     schema: z.object({
       symptoms: z.string().describe('A comma-separated list of symptoms the user is experiencing.'),
       medicalHistory: z.string().optional().describe('Relevant medical history of the user.'),
+      questionnaireAnswers: z.string().optional().describe('Answers to the generated questionnaire.'),
     }),
   },
   output: {
@@ -46,10 +49,11 @@ const symptomAnalysisPrompt = ai.definePrompt({
       description: z.string().optional().describe('A brief description of the condition.'),
     })),
   },
-  prompt: `You are an AI-powered medical expert system. Given the following symptoms and medical history, provide a ranked list of potential conditions, ordered by likelihood (highest to lowest). Include a likelihood score between 0 and 1.
+  prompt: `You are an AI-powered medical expert system. Given the following symptoms, medical history, and questionnaire answers, provide a ranked list of potential conditions, ordered by likelihood (highest to lowest). Include a likelihood score between 0 and 1.
 
 Symptoms: {{{symptoms}}}
 Medical History: {{{medicalHistory}}}
+Questionnaire Answers: {{{questionnaireAnswers}}}
 
 Format the output as a JSON array of objects, each with a 'condition', 'likelihood', and optional 'description' field.  The likelihood should be a number between 0 and 1.
 `,
