@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { SymptomAnalysisOutput } from "@/ai/flows/symptom-analysis";
 
 interface QuestionnaireFormProps {
   questions: string[];
@@ -55,7 +54,7 @@ export const QuestionnaireForm: React.FC<QuestionnaireFormProps> = ({ questions,
             Cancel
           </Button>
           <Button onClick={handleSubmit} disabled={isLoading}>
-            {isLoading ? "Submitting..." : "Submit Answers"}
+            {isLoading ? "Submit Answers" : "Submitting..."}
           </Button>
         </div>
       </div>

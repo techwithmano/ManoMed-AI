@@ -4,16 +4,12 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { symptomAnalysis, SymptomAnalysisOutput } from "@/ai/flows/symptom-analysis";
-import { generateQuestionnaire } from "@/ai/flows/generate-questionnaire-flow";
 
 interface SymptomInputFormProps {
-  onAnalysis: (results: SymptomAnalysisOutput) => void;
-  onQuestionnaire: (questions: string[]) => void;
-  onAnalysisUpdate: (results: SymptomAnalysisOutput) => void;
+  onAnalysis: (symptoms: string, medicalHistory: string) => void;
 }
 
-export const SymptomInputForm: React.FC<SymptomInputFormProps> = ({ onAnalysis, onQuestionnaire, onAnalysisUpdate }) => {
+export const SymptomInputForm: React.FC<SymptomInputFormProps> = ({ onAnalysis }) => {
   const [symptoms, setSymptoms] = useState("");
   const [medicalHistory, setMedicalHistory] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -21,15 +17,7 @@ export const SymptomInputForm: React.FC<SymptomInputFormProps> = ({ onAnalysis, 
   const handleAnalysis = async () => {
     setIsLoading(true);
     try {
-      const analysisResults = await symptomAnalysis({ symptoms, medicalHistory });
-      onAnalysis(analysisResults);
-
-      // Generate questionnaire based on initial analysis
-      const questionnaire = await generateQuestionnaire({ symptoms, medicalHistory });
-      onQuestionnaire(questionnaire);
-
-      onAnalysisUpdate(analysisResults);
-
+      onAnalysis(symptoms, medicalHistory);
     } catch (error) {
       console.error("Error during symptom analysis:", error);
       // Handle error (e.g., display an error message)
