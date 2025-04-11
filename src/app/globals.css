@@ -41,6 +41,16 @@ body {
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* HealthWise AI Theme */
+    --background: 0 0% 100%; /* White */
+    --foreground: 218 35% 9%; /* #10101C */
+    --primary: 218 35% 9%; /* #10101C */
+    --primary-foreground: 0 0% 100%; /* White */
+    --secondary: 48 100% 56%; /* #FBCE32 */
+    --secondary-foreground: 218 35% 9%; /* #10101C */
+    --accent: 0 0% 100%; /* White */
+    --accent-foreground: 218 35% 9%; /* #10101C */
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -86,3 +96,4 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
