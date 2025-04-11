@@ -5,11 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import ThemeSwitcher from '@/components/ThemeSwitcher';
 import { ThemeProvider } from "@/components/theme-provider"
 
-const poppins = Inter({
-  subsets: ['latin'],
-  variable: '--font-poppins',
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-});
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
   title: 'ManoMed AI',
@@ -22,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={poppins.variable}>
+    <html lang="en" className={inter.variable}>
       <body className="antialiased">
           <ThemeProvider
               attribute="class"
@@ -45,5 +41,4 @@ export default function RootLayout({
     </html>
   );
 }
-
 
