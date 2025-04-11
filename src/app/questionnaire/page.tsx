@@ -4,6 +4,7 @@ import { QuestionnaireForm } from "@/components/QuestionnaireForm";
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 import { generateQuestionnaire } from "@/ai/flows/generate-questionnaire-flow";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function QuestionnairePage() {
   const searchParams = useSearchParams();
@@ -32,7 +33,16 @@ export default function QuestionnairePage() {
   };
 
   if (!questions) {
-    return <div>Loading questionnaire...</div>;
+    return (
+      <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4 text-primary">Loading Questionnaire</h1>
+        <Skeleton className="w-full h-10 mb-2" />
+        <Skeleton className="w-full h-10 mb-2" />
+        <Skeleton className="w-full h-10 mb-2" />
+        <Skeleton className="w-full h-10 mb-2" />
+        <Skeleton className="w-full h-10 mb-2" />
+      </div>
+    );
   }
 
   return (
@@ -42,3 +52,4 @@ export default function QuestionnairePage() {
     </div>
   );
 }
+

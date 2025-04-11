@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from "react";
 import { symptomAnalysis, SymptomAnalysisOutput } from "@/ai/flows/symptom-analysis";
 import { Disclaimer } from "@/components/Disclaimer";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ConditionsPage() {
   const searchParams = useSearchParams();
@@ -30,7 +31,14 @@ export default function ConditionsPage() {
   }, [symptoms, medicalHistory, answersString]);
 
   if (!conditions) {
-    return <div>Analyzing symptoms...</div>;
+    return (
+      <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4 text-primary">Analyzing Symptoms</h1>
+        <Skeleton className="w-full h-10 mb-2" />
+        <Skeleton className="w-full h-10 mb-2" />
+        <Skeleton className="w-full h-10 mb-2" />
+      </div>
+    );
   }
 
   return (
@@ -41,3 +49,4 @@ export default function ConditionsPage() {
     </div>
   );
 }
+
