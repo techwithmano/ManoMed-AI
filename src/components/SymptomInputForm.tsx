@@ -29,7 +29,7 @@ export const SymptomInputForm: React.FC<SymptomInputFormProps> = ({ onAnalysis }
   };
 
   return (
-    <div className="mb-4">
+    <div className="mb-4 rounded-md shadow-md p-6 bg-secondary/20">
       <h2 className="text-xl font-semibold mb-2 text-primary">Enter Your Symptoms</h2>
       <div className="grid gap-4">
         <div>
