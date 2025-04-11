@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { symptomAnalysis, SymptomAnalysisOutput } from "@/ai/flows/symptom-analysis";
 import { Disclaimer } from "@/components/Disclaimer";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Loader2 } from "lucide-react";
 
 export default function ConditionsPage() {
   const searchParams = useSearchParams();
@@ -32,11 +33,9 @@ export default function ConditionsPage() {
 
   if (!conditions) {
     return (
-      <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4 text-primary">Analyzing Symptoms</h1>
-        <Skeleton className="w-full h-10 mb-2" />
-        <Skeleton className="w-full h-10 mb-2" />
-        <Skeleton className="w-full h-10 mb-2" />
+      <div className="flex flex-col items-center justify-center min-h-screen bg-secondary">
+        <Loader2 className="animate-spin h-10 w-10 text-primary mb-2" />
+        <p className="text-primary">Analyzing Symptoms...</p>
       </div>
     );
   }
@@ -49,4 +48,5 @@ export default function ConditionsPage() {
     </div>
   );
 }
+
 
