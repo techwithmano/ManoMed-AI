@@ -27,11 +27,11 @@ export const SymptomInputForm: React.FC<SymptomInputFormProps> = ({ onAnalysis }
   };
 
   return (
-    <div className="mb-4 rounded-md shadow-md p-6 bg-secondary/20">
-      <h2 className="text-xl font-semibold mb-2 text-primary">Enter Your Symptoms</h2>
-      <div className="grid gap-4">
+    <div className="mb-8 p-8 rounded-2xl bg-secondary/10 shadow-lg">
+      <h2 className="text-2xl font-semibold mb-4 text-primary">Enter Your Symptoms</h2>
+      <div className="grid gap-6">
         <div>
-          <label htmlFor="symptoms" className="block text-sm font-medium text-foreground">
+          <label htmlFor="symptoms" className="block text-sm font-medium text-foreground mb-2">
             Symptoms (comma-separated):
           </label>
           <Input
@@ -40,10 +40,11 @@ export const SymptomInputForm: React.FC<SymptomInputFormProps> = ({ onAnalysis }
             value={symptoms}
             onChange={(e) => setSymptoms(e.target.value)}
             placeholder="e.g., Headache, Fever, Cough"
+            className="rounded-md shadow-sm"
           />
         </div>
         <div>
-          <label htmlFor="medicalHistory" className="block text-sm font-medium text-foreground">
+          <label htmlFor="medicalHistory" className="block text-sm font-medium text-foreground mb-2">
             Medical History (optional):
           </label>
           <Textarea
@@ -51,9 +52,10 @@ export const SymptomInputForm: React.FC<SymptomInputFormProps> = ({ onAnalysis }
             value={medicalHistory}
             onChange={(e) => setMedicalHistory(e.target.value)}
             placeholder="e.g., Asthma, Allergies"
+            className="rounded-md shadow-sm"
           />
         </div>
-        <Button onClick={handleAnalysis} disabled={isLoading}>
+        <Button onClick={handleAnalysis} disabled={isLoading} className="w-full">
           {isLoading ? "Analyzing..." : "Analyze Symptoms"}
         </Button>
       </div>

@@ -33,20 +33,18 @@ export default function ConditionsPage() {
 
   if (!conditions) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-secondary">
-        <Loader2 className="animate-spin h-10 w-10 text-primary mb-2" />
-        <p className="text-primary">Analyzing Symptoms...</p>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-background">
+        <Loader2 className="animate-spin h-12 w-12 text-secondary mb-4" />
+        <p className="text-lg text-primary">Analyzing Symptoms...</p>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4 text-primary">Potential Conditions</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen p-8">
+      <h1 className="text-3xl font-bold mb-8 text-primary">Potential Conditions</h1>
       <ConditionDisplay conditions={conditions} />
       <Disclaimer />
     </div>
   );
 }
-
-

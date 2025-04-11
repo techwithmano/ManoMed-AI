@@ -22,11 +22,11 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({ conditions }
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-2 text-primary">Potential Conditions</h2>
+      <h2 className="text-xl font-semibold mb-4 text-primary">Potential Conditions</h2>
       {conditions.length > 0 ? (
-        <div className="grid gap-4">
+        <div className="grid gap-6">
           {conditions.map((condition, index) => (
-            <Card key={index} className="shadow-md rounded-md">
+            <Card key={index} className="shadow-md rounded-2xl">
               <CardHeader>
                 <CardTitle className="flex items-center">
                   {condition.condition}

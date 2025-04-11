@@ -35,19 +35,17 @@ export default function QuestionnairePage() {
 
   if (!questions) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-secondary">
-        <Loader2 className="animate-spin h-10 w-10 text-primary mb-2" />
-        <p className="text-primary">Generating Questionnaire...</p>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-background">
+        <Loader2 className="animate-spin h-12 w-12 text-secondary mb-4" />
+        <p className="text-lg text-primary">Generating Questionnaire...</p>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4 text-primary">Questionnaire</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen p-8">
+      <h1 className="text-3xl font-bold mb-8 text-primary">Questionnaire</h1>
       <QuestionnaireForm questions={questions} onAnswers={handleAnswersSubmit} onCancel={handleCancel} />
     </div>
   );
 }
-
-

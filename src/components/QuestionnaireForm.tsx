@@ -33,12 +33,12 @@ export const QuestionnaireForm: React.FC<QuestionnaireFormProps> = ({ questions,
   };
 
   return (
-    <div className="mb-4 rounded-md shadow-md p-6 bg-secondary/20">
-      <h2 className="text-xl font-semibold mb-4 text-primary">Questionnaire</h2>
-      <div className="grid gap-4">
+    <div className="mb-8 p-8 rounded-2xl bg-secondary/10 shadow-lg">
+      <h2 className="text-2xl font-semibold mb-4 text-primary">Questionnaire</h2>
+      <div className="grid gap-6">
         {questions.map((question, index) => (
           <div key={index}>
-            <label htmlFor={`question-${index}`} className="block text-sm font-medium text-foreground">
+            <label htmlFor={`question-${index}`} className="block text-sm font-medium text-foreground mb-2">
               {question}
             </label>
             <Textarea
@@ -46,6 +46,7 @@ export const QuestionnaireForm: React.FC<QuestionnaireFormProps> = ({ questions,
               value={answers[index]}
               onChange={(e) => handleAnswerChange(index, e.target.value)}
               placeholder="Your answer"
+              className="rounded-md shadow-sm"
             />
           </div>
         ))}
