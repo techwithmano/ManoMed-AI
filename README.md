@@ -11,7 +11,8 @@ ManoMed AI is an AI-powered medical symptom analysis tool that helps users under
 - 🏥 Medical condition likelihood assessment
 - 💬 User-friendly interface
 - 🌙 Dark/Light mode support
-- 📱 Responsive design
+- �� Responsive design
+- 🎨 Custom branding and favicon
 
 ## Tech Stack
 
@@ -20,6 +21,7 @@ ManoMed AI is an AI-powered medical symptom analysis tool that helps users under
 - **AI Integration**: Google GenAI
 - **UI Components**: Radix UI
 - **State Management**: React Hooks
+- **Deployment**: Vercel
 
 ## Getting Started
 
@@ -63,10 +65,15 @@ The application will be available at `http://localhost:9002`
 ```
 src/
 ├── app/              # Next.js app directory
+│   ├── layout.tsx    # Root layout with favicon and metadata
+│   └── page.tsx      # Main page component
 ├── components/       # React components
 ├── ai/              # AI integration and flows
 ├── hooks/           # Custom React hooks
 └── lib/             # Utility functions
+public/
+├── icon.ico         # Custom favicon
+└── ...              # Other static assets
 ```
 
 ## Usage
@@ -84,6 +91,15 @@ src/
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
 - `npm run typecheck` - Run TypeScript type checking
+
+## Deployment
+
+The application is deployed on Vercel and automatically updates when changes are pushed to the main branch. The deployment includes:
+
+- Custom favicon and branding
+- Environment variable configuration
+- Automatic HTTPS
+- Global CDN distribution
 
 ## License
 
