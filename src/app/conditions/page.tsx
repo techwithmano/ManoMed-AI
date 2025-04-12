@@ -2,14 +2,14 @@
 
 import { ConditionDisplay } from "@/components/ConditionDisplay";
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { symptomAnalysis, SymptomAnalysisOutput } from "@/ai/flows/symptom-analysis";
 import { Disclaimer } from "@/components/Disclaimer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Loader2 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-export default function ConditionsPage() {
+function ConditionsContent() {
   const searchParams = useSearchParams();
   const symptoms = searchParams.get('symptoms') || '';
   const medicalHistory = searchParams.get('medicalHistory') || '';
@@ -24,7 +24,7 @@ export default function ConditionsPage() {
         const questionnaireAnswers = JSON.parse(decodeURIComponent(answersString));
         const analysisResults = await symptomAnalysis({ symptoms, medicalHistory, questionnaireAnswers: questionnaireAnswers.join(',') });
         setConditions(analysisResults);
-        setError(null); // Clear any previous error
+        setError(null);
       } catch (e: any) {
         console.error("Error during symptom analysis:", e);
         setError("Failed to analyze symptoms. Please try again.");
@@ -46,20 +46,34 @@ export default function ConditionsPage() {
     );
   }
 
-  if (!conditions) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-background">
-        <Loader2 className="animate-spin h-12 w-12 text-secondary mb-4" />
-        <p className="text-lg text-primary">Analyzing Symptoms...</p>
-      </div>
-    );
-  }
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-8">
-      <h1 className="text-3xl font-bold mb-8 text-primary">Potential Conditions</h1>
-      <ConditionDisplay conditions={conditions} />
-      <Disclaimer />
+      {conditions ? (
+        <>
+          <ConditionDisplay conditions={conditions} />
+          <Disclaimer />
+        </>
+      ) : (
+        <div className="flex items-center space-x-4">
+          <Loader2 className="h-8 w-8 animate-spin" />
+          <span>Analyzing symptoms...</span>
+        </div>
+      )}
     </div>
+  );
+}
+
+export default function ConditionsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex flex-col items-center justify-center min-h-screen p-8">
+        <div className="flex items-center space-x-4">
+          <Loader2 className="h-8 w-8 animate-spin" />
+          <span>Loading...</span>
+        </div>
+      </div>
+    }>
+      <ConditionsContent />
+    </Suspense>
   );
 }
