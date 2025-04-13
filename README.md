@@ -3,9 +3,11 @@
 ManoMed AI is an AI-powered medical symptom analysis tool that helps users understand potential medical conditions based on their symptoms and medical history. This project was developed as part of a university course to demonstrate the integration of AI in healthcare applications.
  
  Guide and testing 📼: 
+ 
  https://youtu.be/rHkbJoBnmPk?si=lFO8nr5jbJWZbyQu
 
  Deployments:
+ 
  🔗 https://mano-med-ai.vercel.app/
  
  🔗 https://manomedai.netlify.app/
