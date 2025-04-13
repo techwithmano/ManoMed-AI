@@ -109,9 +109,26 @@ The application is deployed on Vercel and automatically updates when changes are
 - Automatic HTTPS
 - Global CDN distribution
 
-## License
+## License & Usage Terms
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+**This project is protected under the [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/).**
+
+[![License: CC BY-NC-ND 4.0](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+
+### You are allowed to:
+- View and explore the project for personal, non-commercial, read-only purposes.
+- Share the project **as-is** with **proper credit** to the original creator.
+
+### You are **not** allowed to:
+- Copy or fork this repository.
+- Modify, reuse, or create derivatives of any part of the code.
+- Use this project (or parts of it) for academic, commercial, research, or educational purposes.
+- Rebrand, rename, or redistribute this project under any form.
+
+> **This work is the intellectual property of Abdulrahman (a.k.a. Mano), founder of Tech with Mano.**
+> Any unauthorized use, reproduction, or distribution may result in a DMCA takedown and legal consequences.
+
+For inquiries or permissions beyond this license, please contact the author directly.
 
 ## Acknowledgments
 
