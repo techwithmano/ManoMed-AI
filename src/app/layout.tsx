@@ -1,15 +1,19 @@
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
 import './globals.css';
-import {Toaster} from '@/components/ui/toaster';
-import {ThemeProvider} from "@/components/theme-provider";
-import ThemeSwitcher from "@/components/ThemeSwitcher";
+import { Toaster } from '@/components/ui/toaster';
+import { ThemeProvider } from '@/components/theme-provider';
+import ThemeSwitcher from '@/components/ThemeSwitcher';
 import { Inter } from 'next/font/google';
+import Link from 'next/link';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'ManoMed AI',
   description: 'AI-powered medical expert system',
+  icons: {
+    icon: '/icon.ico?v=2',
+  },
 };
 
 export default function RootLayout({
@@ -19,9 +23,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" type="image/x-icon" href="/icon.ico?v=2" />
-      </head>
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"
@@ -29,16 +30,32 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          {/* Header */}
+          <header className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <Link href="/" className="text-lg font-semibold">
+              ManoMed AI
+            </Link>
+            <div className="flex items-center gap-4">
+              {/* Add nav links if needed */}
+              <Link href="/about" className="text-sm hover:underline">
+                About
+              </Link>
+              <Link href="/contact" className="text-sm hover:underline">
+                Contact
+              </Link>
+              <ThemeSwitcher />
+            </div>
+          </header>
 
-          <div className="absolute top-4 right-4">
-            <ThemeSwitcher />
-          </div>
+          {/* Page content */}
+          <main>{children}</main>
 
-          {children}
+          {/* Footer */}
           <footer className="flex items-center justify-center w-full py-4 text-sm text-gray-500">
             © 2025 ManoMed AI. All rights reserved.
           </footer>
-          <Toaster/>
+
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
