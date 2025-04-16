@@ -1,6 +1,8 @@
-// about/page.tsx
+'use client';
+
 import React from "react";
 import Image from "next/image";
+import profilePic from "./profile.jpg"; // Local import from same folder
 
 const AboutPage = () => {
   return (
@@ -15,17 +17,18 @@ const AboutPage = () => {
           </p>
         </header>
 
-        {/* New Picture Section */}
+        {/* 👤 Profile Picture */}
         <div className="flex justify-center mb-12">
           <Image 
-            src="/about/profile.jpg" 
-            alt="Abdulrahman Haramain" 
-            width={200} 
+            src={profilePic}
+            alt="Abdulrahman Haramain"
+            width={200}
             height={200}
             className="rounded-full border-4 border-primary"
           />
         </div>
 
+        {/* 🧠 Story Section */}
         <section className="mb-16 bg-card rounded-2xl p-8 border">
           <h2 className="text-3xl font-bold mb-6 flex items-center">
             <span className="mr-3">👋</span> My Story
@@ -43,6 +46,7 @@ const AboutPage = () => {
           </div>
         </section>
 
+        {/* 🛠 Skills Section */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold mb-8 text-center">
             🛠 Skills & Expertise
@@ -71,6 +75,7 @@ const AboutPage = () => {
           </div>
         </section>
 
+        {/* 🎓 Teaching Philosophy */}
         <section className="mb-16 bg-card rounded-2xl p-8 border">
           <h2 className="text-3xl font-bold mb-6">🧠 My Teaching Approach</h2>
           <div className="grid md:grid-cols-2 gap-8 text-muted-foreground">
@@ -81,6 +86,7 @@ const AboutPage = () => {
           </div>
         </section>
 
+        {/* 🏆 Achievements */}
         <section className="mb-16">
           <h2 className="text-3xl font-bold mb-8 text-center">
             🏆 Notable Achievements
