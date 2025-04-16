@@ -10,7 +10,8 @@ const AboutPage = () => {
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <header className="text-center mb-16">
           <h1 className="text-5xl font-bold mb-4">
-            About <span className="text-primary">Abdulrahman</span>
+            About 
+          <h2><span className="text-primary">Abdulrahman Haramain</span> </h2>
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Junior Developer • ICT Tutor • Tech with Mano Founder
