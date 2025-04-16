@@ -18,7 +18,7 @@ const AboutPage = () => {
         {/* New Picture Section */}
         <div className="flex justify-center mb-12">
           <Image 
-            src="/profile.jpg" 
+            src="/about/profile.jpg" 
             alt="Abdulrahman Haramain" 
             width={200} 
             height={200}
