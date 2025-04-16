@@ -1,167 +1,136 @@
-// contact/page.tsx
-import React from "react";
+"use client";
 
-const ContactPage = () => {
+import React from "react";
+import Image from "next/image";
+import profilePic from "./profile.jpg"; // Local import from same folder
+
+const AboutPage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <div className="container mx-auto px-4 py-12 max-w-3xl">
-        <header className="text-center mb-12">
-          <div className="mb-6">
-            <h1 className="text-4xl font-bold mb-2">Abdulrahman.H</h1>
-            <p className="text-lg text-muted-foreground">
-              💻 Tech enthusiast & IGCSE ICT tutor
-            </p>
-          </div>
-          <div className="bg-card rounded-xl p-6 border">
-            <p className="italic text-muted-foreground">
-              "Passionate about empowering students through technology"
-            </p>
-          </div>
+      <div className="container mx-auto px-4 py-12 max-w-4xl">
+        <header className="text-center mb-16">
+          <h1 className="text-5xl font-bold mb-4">Contact</h1>
+          <br />
+          <br />
+          <h2>
+            <span className="text-3xl font-bold mb-6">
+              Abdulrahman Haramain
+            </span>
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Junior Developer • ICT Tutor • Tech with Mano Founder
+          </p>
         </header>
 
-        <div className="grid md:grid-cols-2 gap-6 mb-12">
-          <div className="space-y-6">
-            <SectionCard title="📬 Essentials">
-              <InfoItem label="Email" value="abdulrahman@example.com" />
-              <InfoItem label="Phone" value="+123 456 789" />
-              <InfoItem label="IGCSE ICT" value="0417/0983 2025" />
-              <InfoItem
-                label="Revision Notes"
-                value="TWM ICT 0417 LAST MIN REV NOTES MJ 25"
-              />
-            </SectionCard>
-
-            <SectionCard title="📱 Personal">
-              <SocialLink
-                platform="Instagram"
-                handle="@personal_handle"
-                url="#"
-              />
-              <SocialLink platform="Snapchat" handle="@snap_handle" url="#" />
-            </SectionCard>
-          </div>
-
-          <div className="space-y-6">
-            <SectionCard title="🌐 Techwithmano">
-              <SocialLink platform="WhatsApp Channel" url="#" />
-              <SocialLink
-                platform="Instagram"
-                url="https://instagram.com/Techwithmano"
-              />
-              <SocialLink
-                platform="TikTok"
-                url="https://tiktok.com/@Techwithmano"
-              />
-              <SocialLink
-                platform="Facebook"
-                url="https://facebook.com/Techwithmano"
-              />
-              <SocialLink
-                platform="YouTube"
-                url="https://youtube.com/Techwithmano"
-              />
-              <SocialLink
-                platform="LinkedIn"
-                url="https://linkedin.com/in/Techwithmano"
-              />
-            </SectionCard>
-
-            <SectionCard title="🚀 Projects">
-              <ProjectCard
-                title="ManoMed AI"
-                description="Medical expert system powered by AI"
-                url="#"
-              />
-              <a
-                href="https://link-to-your-cv.com"
-                className="flex items-center p-4 bg-accent rounded-lg hover:bg-accent/80 transition-colors"
-              >
-                <span className="mr-3">📄</span>
-                <div>
-                  <p className="font-medium">View Full CV</p>
-                  <p className="text-sm text-muted-foreground">
-                    Qualifications & Experience
-                  </p>
-                </div>
-              </a>
-            </SectionCard>
-          </div>
+        {/* 👤 Profile Picture */}
+        <div className="flex justify-center mb-12">
+          <Image
+            src={profilePic}
+            alt="Abdulrahman Haramain"
+            width={200}
+            height={200}
+            className="rounded-full border-4 border-primary"
+          />
         </div>
 
-        <div className="text-center border-t border-border pt-12">
-          <h3 className="text-xl font-bold mb-4">Join the Community</h3>
+        {/* 🛠 Skills Section */}
+        <section className="mb-16">
+          <h2 className="text-3xl font-bold mb-8 text-center">
+            🌐 Social Links
+          </h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            <SkillCard
+              title="Instagram"
+              description="Follow my visual journey and tech tips"
+              icon="📸"
+              link="https://instagram.com/tech_with_mano"
+            />
+            <SkillCard
+              title="TikTok"
+              description="Watch quick tech tutorials and updates"
+              icon="🎵"
+              link="https://tiktok.com/@tech_with_mano"
+            />
+            <SkillCard
+              title="Facebook"
+              description="Join the Tech with Mano ICT student community"
+              icon="📘"
+              link="https://www.facebook.com/people/Tech-With-Mano/61574412262214/"
+            />
+            <SkillCard
+              title="YouTube"
+              description="Learn ICT and software with visual guides"
+              icon="📹"
+              link="https://youtube.com/@tech_with_mano"
+            />
+            <SkillCard
+              title="LinkedIn"
+              description="Connect with me professionally"
+              icon="💼"
+              link="https://linkedin.com/in/techwithmano"
+            />
+            <SkillCard
+              title="GitHub"
+              description="Explore my open-source projects"
+              icon="🐱"
+              link="https://github.com/techwithmano"
+            />
+          </div>
+        </section>
+
+        {/* 🔗 Linktree Button */}
+        <div className="flex justify-center mt-12">
           <a
             href="https://linktr.ee/techwithmano"
-            className="inline-block px-8 py-3 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold text-lg shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-transparent hover:border-white"
           >
-            Explore All Links →
+            🌐 Visit My Linktree
           </a>
-          <p className="mt-6 text-sm text-muted-foreground">
-            <a href="#" className="hover:text-foreground transition-colors">
-              Cookie Preferences
-            </a>
-          </p>
         </div>
       </div>
     </div>
   );
 };
 
-interface SectionCardProps {
-  title: string;
-  children: React.ReactNode;
-}
-
-const SectionCard = ({ title, children }: SectionCardProps) => (
-  <div className="bg-card rounded-xl p-6 border">
-    <h2 className="text-xl font-semibold mb-4">{title}</h2>
-    <div className="space-y-3">{children}</div>
-  </div>
-);
-
-interface InfoItemProps {
-  label: string;
-  value: string;
-}
-
-const InfoItem = ({ label, value }: InfoItemProps) => (
-  <div className="flex justify-between items-center p-3 hover:bg-accent rounded-lg transition-colors">
-    <span className="text-muted-foreground">{label}</span>
-    <span className="font-medium">{value}</span>
-  </div>
-);
-
-// Dummy placeholders for external components
-const SocialLink = ({
-  platform,
-  handle,
-  url,
-}: {
-  platform: string;
-  handle?: string;
-  url: string;
-}) => (
-  <a href={url} className="block hover:text-primary transition-colors">
-    {platform} {handle && `(${handle})`}
-  </a>
-);
-
-const ProjectCard = ({
-  title,
-  description,
-  url,
-}: {
+interface SkillCardProps {
   title: string;
   description: string;
-  url: string;
-}) => (
-  <a
-    href={url}
-    className="block p-4 bg-card rounded-lg border hover:bg-accent transition-colors"
-  >
-    <h4 className="font-bold">{title}</h4>
-    <p className="text-sm text-muted-foreground">{description}</p>
-  </a>
+  icon: string;
+  link?: string;
+}
+
+const SkillCard = ({ title, description, icon, link }: SkillCardProps) => {
+  const cardContent = (
+    <div className="bg-card p-6 rounded-xl border hover:bg-accent transition-colors">
+      <div className="text-3xl mb-4">{icon}</div>
+      <h3 className="text-xl font-bold mb-2">{title}</h3>
+      <p className="text-muted-foreground">{description}</p>
+    </div>
+  );
+
+  return link ? (
+    <a href={link} target="_blank" rel="noopener noreferrer" className="block">
+      {cardContent}
+    </a>
+  ) : (
+    cardContent
+  );
+};
+
+interface AchievementProps {
+  title: string;
+  description: string;
+  year: string;
+}
+
+const Achievement = ({ title, description, year }: AchievementProps) => (
+  <div className="bg-card p-4 rounded-xl border hover:bg-accent transition-colors">
+    <h4 className="font-semibold">{title}</h4>
+    <p className="text-muted-foreground text-sm">{description}</p>
+    <p className="text-xs text-muted-foreground mt-1">{year}</p>
+  </div>
 );
 
-export default ContactPage;
+export default AboutPage;
