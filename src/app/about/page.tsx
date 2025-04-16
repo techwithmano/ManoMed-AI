@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React from "react";
 import Image from "next/image";
@@ -9,10 +9,15 @@ const AboutPage = () => {
     <div className="min-h-screen bg-background text-foreground">
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <header className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-4">
-            About 
-          <h2><span className="text-primary">Abdulrahman Haramain</span> </h2>
-          </h1>
+          <h1 className="text-5xl font-bold mb-4">About</h1>
+          <br></br>
+          <br></br>
+          <h2>
+            <span className="text-3xl font-bold mb-6">
+              Abdulrahman Haramain
+            </span>{" "}
+          </h2>
+
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Junior Developer • ICT Tutor • Tech with Mano Founder
           </p>
@@ -20,7 +25,7 @@ const AboutPage = () => {
 
         {/* 👤 Profile Picture */}
         <div className="flex justify-center mb-12">
-          <Image 
+          <Image
             src={profilePic}
             alt="Abdulrahman Haramain"
             width={200}
@@ -36,13 +41,21 @@ const AboutPage = () => {
           </h2>
           <div className="space-y-4 text-lg leading-relaxed text-muted-foreground">
             <p>
-              I'm <strong>Abdulrahman Haramain</strong>, a 16-year-old junior developer and founder of <strong>Tech with Mano</strong> and <strong>ManoMed AI</strong>. I started coding when I was 10 and have since built platforms that bring education and innovation together.
+              I'm <strong>Abdulrahman Haramain</strong>, a 16-year-old junior
+              developer and founder of <strong>Tech with Mano</strong> and{" "}
+              <strong>ManoMed AI</strong>. I started coding when I was 10 and
+              have since built platforms that bring education and innovation
+              together.
             </p>
             <p>
-              I’ve taught over 50+ IGCSE ICT students since 2023 and have helped many of them reach top grades. My work blends teaching, development, and creativity with a deep focus on impact.
+              I’ve taught over 50+ IGCSE ICT students since 2023 and have helped
+              many of them reach top grades. My work blends teaching,
+              development, and creativity with a deep focus on impact.
             </p>
             <p>
-              Right now, I’m working on multiple projects that merge technology, education, and healthcare — all with the goal of making real change and creating opportunities for others.
+              Right now, I’m working on multiple projects that merge technology,
+              education, and healthcare — all with the goal of making real
+              change and creating opportunities for others.
             </p>
           </div>
         </section>
