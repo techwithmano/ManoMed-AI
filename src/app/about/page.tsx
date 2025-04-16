@@ -1,5 +1,6 @@
 // about/page.tsx
 import React from "react";
+import Image from "next/image";
 
 const AboutPage = () => {
   return (
@@ -13,6 +14,17 @@ const AboutPage = () => {
             Junior Developer • ICT Tutor • Tech with Mano Founder
           </p>
         </header>
+
+        {/* New Picture Section */}
+        <div className="flex justify-center mb-12">
+          <Image 
+            src="/profile.jpg" 
+            alt="Abdulrahman Haramain" 
+            width={200} 
+            height={200}
+            className="rounded-full border-4 border-primary"
+          />
+        </div>
 
         <section className="mb-16 bg-card rounded-2xl p-8 border">
           <h2 className="text-3xl font-bold mb-6 flex items-center">
