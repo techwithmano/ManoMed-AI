@@ -5,6 +5,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 import ThemeSwitcher from '@/components/ThemeSwitcher';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
+import { ClerkProvider } from '@clerk/nextjs';
+import { dark } from '@clerk/themes';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,42 +24,44 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {/* Header */}
-          <header className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-            <Link href="/" className="text-lg font-semibold">
-              ManoMed AI
-            </Link>
-            <div className="flex items-center gap-4">
-              {/* Add nav links if needed */}
-              <Link href="/about" className="text-sm hover:underline">
-                About
+    <ClerkProvider appearance={{ baseTheme: dark }}>
+      <html lang="en">
+        <body className={inter.className}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {/* Header */}
+            <header className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+              <Link href="/" className="text-lg font-semibold">
+                ManoMed AI
               </Link>
-              <Link href="/contact" className="text-sm hover:underline">
-                Contact
-              </Link>
-              <ThemeSwitcher />
-            </div>
-          </header>
+              <div className="flex items-center gap-4">
+                {/* Add nav links if needed */}
+                <Link href="/about" className="text-sm hover:underline">
+                  About
+                </Link>
+                <Link href="/contact" className="text-sm hover:underline">
+                  Contact
+                </Link>
+                <ThemeSwitcher />
+              </div>
+            </header>
 
-          {/* Page content */}
-          <main>{children}</main>
+            {/* Page content */}
+            <main>{children}</main>
 
-          {/* Footer */}
-          <footer className="flex items-center justify-center w-full py-4 text-sm text-gray-500">
-            © 2025 ManoMed AI. All rights reserved.
-          </footer>
+            {/* Footer */}
+            <footer className="flex items-center justify-center w-full py-4 text-sm text-gray-500">
+              © 2025 ManoMed AI. All rights reserved.
+            </footer>
 
-          <Toaster />
-        </ThemeProvider>
-      </body>
-    </html>
+            <Toaster />
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

@@ -1,79 +1,14 @@
-"use client";
+// src/app/contact/page.tsx
 
-import { ConditionDisplay } from "@/components/ConditionDisplay";
-import { useSearchParams } from 'next/navigation';
-import { useEffect, useState, Suspense } from "react";
-import { symptomAnalysis, SymptomAnalysisOutput } from "@/ai/flows/symptom-analysis";
-import { Disclaimer } from "@/components/Disclaimer";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Loader2 } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import React from "react";
 
-function ConditionsContent() {
-  const searchParams = useSearchParams();
-  const symptoms = searchParams.get('symptoms') || '';
-  const medicalHistory = searchParams.get('medicalHistory') || '';
-  const answersString = searchParams.get('answers') || '[]';
-
-  const [conditions, setConditions] = useState<SymptomAnalysisOutput | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchConditions = async () => {
-      try {
-        const questionnaireAnswers = JSON.parse(decodeURIComponent(answersString));
-        const analysisResults = await symptomAnalysis({ symptoms, medicalHistory, questionnaireAnswers: questionnaireAnswers.join(',') });
-        setConditions(analysisResults);
-        setError(null);
-      } catch (e: any) {
-        console.error("Error during symptom analysis:", e);
-        setError("Failed to analyze symptoms. Please try again.");
-        setConditions(null);
-      }
-    };
-
-    fetchConditions();
-  }, [symptoms, medicalHistory, answersString]);
-
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-8">
-        <Alert variant="destructive">
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      </div>
-    );
-  }
-
+export default function Contact() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-8">
-      {conditions ? (
-        <>
-          <ConditionDisplay conditions={conditions} />
-          <Disclaimer />
-        </>
-      ) : (
-        <div className="flex items-center space-x-4">
-          <Loader2 className="h-8 w-8 animate-spin" />
-          <span>Analyzing symptoms...</span>
-        </div>
-      )}
+      <h1 className="text-4xl font-bold mb-8 text-primary">Contact Us</h1>
+      <p className="text-lg mb-4">Have questions or feedback? We'd love to hear from you!</p>
+      <p className="text-lg">Email: support@manomedai.com</p>
+      <p className="text-lg">Phone: +1 (800) 123-4567</p>
     </div>
-  );
-}
-
-export default function ConditionsPage() {
-  return (
-    <Suspense fallback={
-      <div className="flex flex-col items-center justify-center min-h-screen p-8">
-        <div className="flex items-center space-x-4">
-          <Loader2 className="h-8 w-8 animate-spin" />
-          <span>Loading...</span>
-        </div>
-      </div>
-    }>
-      <ConditionsContent />
-    </Suspense>
   );
 }
