@@ -1,139 +1,88 @@
-// about/page.tsx
-import React from "react";
+// pages/about.tsx
 
-const AboutPage = () => {
+import Head from 'next/head';
+
+export default function About() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="container mx-auto px-4 py-12 max-w-4xl">
-        <header className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-4">
-            About <span className="text-primary">Abdulrahman</span>
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            ICT Tutor • Tech Innovator • Lifelong Learner
+    <>
+      <Head>
+        <title>About | Abdulrahman Haramain</title>
+      </Head>
+      <div className="px-6 py-12 max-w-4xl mx-auto text-gray-800">
+        <h1 className="text-4xl font-bold mb-6">About Abdulrahman Haramain</h1>
+
+        <section className="mb-10">
+          <h2 className="text-2xl font-semibold mb-2">Who Am I?</h2>
+          <p className="text-lg leading-relaxed">
+            I'm <strong>Abdulrahman Haramain</strong>, a 16-year-old junior developer and founder of
+            <strong> Tech with Mano</strong> and <strong>ManoMed AI</strong>. I began coding at the age of 10, and since then, I’ve built tools that bring tech, education, and impact together.
+            I’ve taught over <strong>50 IGCSE ICT students</strong> since 2023, many of whom have gone on to achieve top grades. My focus lies in teaching, building, and creating meaningful platforms for everyone.
           </p>
-        </header>
+        </section>
 
-        <section className="mb-16 bg-card rounded-2xl p-8 border">
-          <h2 className="text-3xl font-bold mb-6 flex items-center">
-            <span className="mr-3">👋</span> My Story
-          </h2>
-          <div className="space-y-4 text-lg leading-relaxed text-muted-foreground">
-            <p>
-              I started coding at the age of 9 and have been passionate about
-              teaching and creating tools that simplify tech education ever
-              since.
+        <section className="mb-10">
+          <h2 className="text-2xl font-semibold mb-2">Projects & Vision</h2>
+
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold">1. ManoMed AI</h3>
+            <p className="text-lg leading-relaxed">
+              <strong>Launched:</strong> 2025 — <em>Under Development</em><br />
+              ManoMed AI is a simple yet powerful hybrid expert system that provides diagnostic support for both physical and mental health. With a 95% accuracy rate, it’s accessible to all users — from children to doctors.
+              It aims to serve underdeveloped communities, patients without access to doctors, and even healthcare professionals.
             </p>
-            <p>
-              Through <strong>Tech with Mano</strong>, I’ve taught IGCSE ICT to
-              over a thousand students, helping them achieve top grades, and
-              built AI-powered tools like ManoMed AI.
+            <ul className="list-disc list-inside mt-2">
+              <li>Dual-domain (physical & mental)</li>
+              <li>User-friendly for all ages</li>
+              <li>Supports doctors, caregivers, and individuals</li>
+            </ul>
+            <p className="mt-2"><strong>Tech Stack:</strong> Next.js, React, TypeScript, Tailwind CSS, Google GenAI, Redux, Vercel & Netlify</p>
+          </div>
+
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold">2. Tech with Mano LMS</h3>
+            <p className="text-lg leading-relaxed">
+              A tailored learning platform under development for teaching IGCSE ICT, RCTD, and other technical subjects. It includes quizzes, student reports, and support for future course expansion.
             </p>
-            <p>
-              My goal is to make learning interactive, fun, and personalized
-              using the power of code.
+          </div>
+
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold">3. Surprise Project – Coming Soon</h3>
+            <p className="text-lg leading-relaxed italic">
+              Expect something creative, extraordinary, and uniquely built to inspire.
             </p>
           </div>
         </section>
 
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-8 text-center">
-            🛠 Skills & Expertise
-          </h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <SkillCard
-              title="ICT Education"
-              description="Specialized in IGCSE ICT curriculum with proven student success"
-              icon="🎓"
-            />
-            <SkillCard
-              title="Software Development"
-              description="Full-stack developer with focus on educational platforms"
-              icon="💻"
-            />
-            <SkillCard
-              title="AI Integration"
-              description="Built medical and academic expert systems using AI"
-              icon="🤖"
-            />
-            <SkillCard
-              title="Content Creation"
-              description="Produced YouTube and social content for tech learners"
-              icon="📹"
-            />
-          </div>
+        <section className="mb-10">
+          <h2 className="text-2xl font-semibold mb-2">Skills & Expertise</h2>
+          <ul className="list-disc list-inside text-lg">
+            <li>Software Development</li>
+            <li>AI Integration</li>
+            <li>Web Design & UI/UX</li>
+            <li>Teaching IGCSE ICT</li>
+            <li>Entrepreneurship & Project Management</li>
+          </ul>
         </section>
 
-        <section className="mb-16 bg-card rounded-2xl p-8 border">
-          <h2 className="text-3xl font-bold mb-6">🧠 My Teaching Approach</h2>
-          <div className="grid md:grid-cols-2 gap-8 text-muted-foreground">
-            <p>✅ Focused on fundamentals</p>
-            <p>✅ Real-world applications</p>
-            <p>✅ Simplified revision strategies</p>
-            <p>✅ Peer-driven learning environments</p>
-          </div>
+        <section className="mb-10">
+          <h2 className="text-2xl font-semibold mb-2">Where I See the Future</h2>
+          <p className="text-lg leading-relaxed">
+            <strong>In 1 year:</strong> ManoMed AI fully launched with x-ray scanning and advanced AI features.<br />
+            <strong>In 5 years:</strong> I hope to achieve global reach, partner with hospitals, universities, and NGOs, and create meaningful social impact.
+          </p>
         </section>
 
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold mb-8 text-center">
-            🏆 Notable Achievements
-          </h2>
-          <div className="space-y-6">
-            <Achievement
-              title="1000+ Students Taught"
-              description="Helped students achieve top grades in IGCSE ICT"
-              year="2021-Present"
-            />
-            <Achievement
-              title="ManoMed AI Launch"
-              description="Created an AI medical expert system under Creative Commons"
-              year="2025"
-            />
-          </div>
+        <section className="mb-10">
+          <h2 className="text-2xl font-semibold mb-2">Contact</h2>
+          <p className="text-lg leading-relaxed">
+            Want to collaborate or reach out? Visit the <a href="/contact" className="text-blue-600 underline">Contact</a> page.
+          </p>
         </section>
 
-        <div className="text-center">
-          <h3 className="text-2xl font-bold mb-6">
-            Ready to connect or learn together?
-          </h3>
-          <a
-            href="/contact"
-            className="inline-block px-8 py-4 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors text-lg font-medium"
-          >
-            Get In Touch
-          </a>
-        </div>
+        <footer className="text-center mt-12 text-gray-600 text-lg">
+          <p>“<strong>Byte by Byte, Build your Might.</strong>” – Abdulrahman Haramain</p>
+        </footer>
       </div>
-    </div>
+    </>
   );
-};
-
-interface SkillCardProps {
-  title: string;
-  description: string;
-  icon: string;
 }
-
-const SkillCard = ({ title, description, icon }: SkillCardProps) => (
-  <div className="bg-card p-6 rounded-xl border hover:bg-accent transition-colors">
-    <div className="text-3xl mb-4">{icon}</div>
-    <h3 className="text-xl font-bold mb-2">{title}</h3>
-    <p className="text-muted-foreground">{description}</p>
-  </div>
-);
-
-interface AchievementProps {
-  title: string;
-  description: string;
-  year: string;
-}
-
-const Achievement = ({ title, description, year }: AchievementProps) => (
-  <div className="bg-card p-4 rounded-xl border hover:bg-accent transition-colors">
-    <h4 className="font-semibold">{title}</h4>
-    <p className="text-muted-foreground text-sm">{description}</p>
-    <p className="text-xs text-muted-foreground mt-1">{year}</p>
-  </div>
-);
-
-export default AboutPage;
