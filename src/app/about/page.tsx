@@ -38,7 +38,7 @@ const AboutPage = () => {
               I'm <strong>Abdulrahman Haramain</strong>, a 16-year-old junior developer and founder of <strong>Tech with Mano</strong> and <strong>ManoMed AI</strong>. I started coding when I was 10 and have since built platforms that bring education and innovation together.
             </p>
             <p>
-              I’ve taught over 50 IGCSE ICT students since 2023 and have helped many of them reach top grades. My work blends teaching, development, and creativity with a deep focus on impact.
+              I’ve taught over 50+ IGCSE ICT students since 2023 and have helped many of them reach top grades. My work blends teaching, development, and creativity with a deep focus on impact.
             </p>
             <p>
               Right now, I’m working on multiple projects that merge technology, education, and healthcare — all with the goal of making real change and creating opportunities for others.
@@ -94,7 +94,7 @@ const AboutPage = () => {
           <div className="space-y-6">
             <Achievement
               title="50+ Students Taught"
-              description="Guided IGCSE students toward top performance and confidence"
+              description="Guided ICT IGCSE students toward top performance and confidence"
               year="2023–Present"
             />
             <Achievement
@@ -105,12 +105,12 @@ const AboutPage = () => {
             <Achievement
               title="Tech with Mano LMS"
               description="Currently building a full learning platform for ICT and coding"
-              year="2025"
+              year="Coming Soon..."
             />
             <Achievement
               title="Third Project – Coming Soon"
               description="Stay tuned for something unique and inspiring"
-              year="2025"
+              year="Coming Soon..."
             />
           </div>
         </section>
