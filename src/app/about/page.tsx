@@ -1,120 +1,202 @@
-import React from 'react';
+import React from "react";
 
-const ContactPage = () => {
+const AboutPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-blue-900 text-gray-100">
-      <div className="container mx-auto px-4 py-12 max-w-3xl">
-        {/* Profile Header */}
-        <header className="text-center mb-12">
-          <div className="mb-6">
-            <h1 className="text-4xl font-bold mb-2">Abdulrahman.H</h1>
-            <p className="text-lg text-blue-300">💻 Tech enthusiast & ICT tutor</p>
-          </div>
-          <div className="bg-white/10 rounded-xl p-6 shadow-lg">
-            <p className="italic">“Passionate about empowering students through technology”</p>
-          </div>
+    <div className="min-h-screen bg-transparent text-white">
+      <div className="container mx-auto px-4 py-12 max-w-4xl">
+        {/* ===== HERO SECTION ===== */}
+        <header className="text-center mb-16">
+          <h1 className="text-5xl font-bold mb-4">
+            About{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+              Abdulrahman
+            </span>
+          </h1>
+          <p className="text-xl text-white/80 max-w-2xl mx-auto">
+            Educator • Tech Innovator • Lifelong Learner
+          </p>
         </header>
 
-        {/* Main Content Grid */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-
-          {/* Left Column - Contact & Essentials */}
-          <div className="space-y-8">
-            <SectionCard title="📬 Essentials">
-              <InfoItem label="Email" value="abdulrahman@example.com" />
-              <InfoItem label="Phone" value="+123 456 789" />
-              <InfoItem label="IGCSE ICT" value="0417/0983 2025" />
-              <InfoItem label="Revision Notes" value="TWM ICT 0417 LAST MIN REV NOTES MJ 25" />
-            </SectionCard>
-
-            <SectionCard title="📱 Personal">
-              <SocialLink platform="Instagram" handle="@personal_handle" url="#" />
-              <SocialLink platform="Snapchat" handle="@snap_handle" url="#" />
-            </SectionCard>
+        {/* ===== BIO SECTION ===== */}
+        <section className="mb-16 bg-white/10 rounded-2xl p-8 backdrop-blur-sm">
+          <h2 className="text-3xl font-bold mb-6 flex items-center">
+            <span className="mr-3">👋</span> My Story
+          </h2>
+          {/* Replace with your actual bio */}
+          <div className="space-y-4 text-lg leading-relaxed">
+            <p>
+              Hello! I'm Abdulrahman, a passionate ICT tutor and technology
+              enthusiast with over 5 years of experience in education and
+              software development.
+            </p>
+            <p>
+              My journey began when I first discovered my love for computers at
+              age 12, and since then I've dedicated myself to both mastering
+              technology and teaching others.
+            </p>
+            <p>
+              When I'm not teaching or coding, you'll find me exploring new
+              edtech tools, contributing to open-source projects, or creating
+              educational content.
+            </p>
           </div>
+        </section>
 
-          {/* Right Column - Social & Projects */}
-          <div className="space-y-8">
-            <SectionCard title="🌐 Techwithmano">
-              <SocialLink platform="WhatsApp Channel" url="#" />
-              <SocialLink platform="Instagram" url="https://instagram.com/Techwithmano" />
-              <SocialLink platform="TikTok" url="https://tiktok.com/@Techwithmano" />
-              <SocialLink platform="Facebook" url="https://facebook.com/Techwithmano" />
-              <SocialLink platform="YouTube" url="https://youtube.com/Techwithmano" />
-              <SocialLink platform="LinkedIn" url="https://linkedin.com/in/Techwithmano" />
-            </SectionCard>
-
-            <SectionCard title="🚀 Projects">
-              <ProjectCard
-                title="ManoMed AI"
-                description="Medical expert system powered by AI"
-                url="#"
-              />
-              <a href="https://link-to-your-cv.com" 
-                 className="flex items-center p-4 bg-blue-800/30 rounded-lg hover:bg-blue-800/50 transition-colors">
-                <span className="mr-3">📄</span>
-                <div>
-                  <p className="font-medium">View Full CV</p>
-                  <p className="text-sm text-blue-300">Qualifications & Experience</p>
-                </div>
-              </a>
-            </SectionCard>
+        {/* ===== SKILLS & EXPERTISE ===== */}
+        <section className="mb-16">
+          <h2 className="text-3xl font-bold mb-8 text-center">
+            🛠 Skills & Expertise
+          </h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Update with your actual skills */}
+            <SkillCard
+              title="ICT Education"
+              description="Specialized in IGCSE ICT curriculum with proven student success"
+              icon="🎓"
+            />
+            <SkillCard
+              title="Web Development"
+              description="Full-stack development with React, Node.js, and modern frameworks"
+              icon="💻"
+            />
+            <SkillCard
+              title="AI Systems"
+              description="Building practical AI solutions like ManoMed AI"
+              icon="🧠"
+            />
+            <SkillCard
+              title="EdTech Innovation"
+              description="Creating engaging digital learning experiences"
+              icon="🚀"
+            />
           </div>
-        </div>
+        </section>
 
-        {/* Footer CTA */}
-        <div className="text-center border-t border-white/10 pt-12">
-          <h3 className="text-xl font-bold mb-4">Join the Community</h3>
-          <a href="https://linktr.ee/techwithmano"
-             className="inline-block px-8 py-3 bg-blue-600 rounded-full hover:bg-blue-700 transition-colors">
-            Explore All Links →
+        {/* ===== TEACHING PHILOSOPHY ===== */}
+        <section className="mb-16 bg-white/10 rounded-2xl p-8 backdrop-blur-sm">
+          <h2 className="text-3xl font-bold mb-6">🧠 My Teaching Approach</h2>
+          {/* Update with your philosophy */}
+          <div className="grid md:grid-cols-2 gap-8">
+            <PhilosophyPoint
+              title="Practical First"
+              description="I believe in hands-on learning where students build real projects from day one"
+            />
+            <PhilosophyPoint
+              title="Growth Mindset"
+              description="Every challenge is an opportunity to learn and improve"
+            />
+            <PhilosophyPoint
+              title="Accessible Tech"
+              description="Making complex concepts simple and approachable"
+            />
+            <PhilosophyPoint
+              title="Future-Ready"
+              description="Focusing on skills that will matter in tomorrow's digital world"
+            />
+          </div>
+        </section>
+
+        {/* ===== ACHIEVEMENTS ===== */}
+        <section className="mb-16">
+          <h2 className="text-3xl font-bold mb-8 text-center">
+            🏆 Notable Achievements
+          </h2>
+          {/* Update with your achievements */}
+          <div className="space-y-6">
+            <Achievement
+              title="1000+ Students Taught"
+              description="Helped students achieve top grades in IGCSE ICT"
+              year="2018-Present"
+            />
+            <Achievement
+              title="ManoMed AI Development"
+              description="Created an AI medical assistant used by healthcare professionals"
+              year="2022"
+            />
+            <Achievement
+              title="TechWithMano Community"
+              description="Built an online learning platform with 10k+ followers"
+              year="2020-Present"
+            />
+          </div>
+        </section>
+
+        {/* ===== CTA SECTION ===== */}
+        <div className="text-center">
+          <h3 className="text-2xl font-bold mb-6">
+            Ready to connect or learn together?
+          </h3>
+          <a
+            href="/contact" // Link to your contact page
+            className="inline-block px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full hover:from-cyan-600 hover:to-blue-700 transition-colors text-lg font-medium"
+          >
+            Get In Touch
           </a>
-          <p className="mt-6 text-sm text-blue-300">
-            <a href="#" className="hover:text-white">Cookie Preferences</a>
-          </p>
         </div>
       </div>
     </div>
   );
 };
 
-// Reusable Components
-const SectionCard = ({ title, children }: { title: string; children: React.ReactNode }) => (
-  <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-white/10">
-    <h2 className="text-xl font-semibold mb-4">{title}</h2>
-    <div className="space-y-3">{children}</div>
+// ===== REUSABLE COMPONENTS =====
+
+interface SkillCardProps {
+  title: string;
+  description: string;
+  icon: string;
+}
+
+const SkillCard = ({ title, description, icon }: SkillCardProps) => (
+  <div className="bg-white/5 p-6 rounded-xl hover:bg-white/10 transition-colors">
+    <div className="text-3xl mb-4">{icon}</div>
+    <h3 className="text-xl font-bold mb-2">{title}</h3>
+    <p className="text-white/80">{description}</p>
   </div>
 );
 
-const InfoItem = ({ label, value }: { label: string; value: string }) => (
-  <div className="flex justify-between items-center p-3 hover:bg-white/5 rounded-lg">
-    <span className="text-blue-300">{label}</span>
-    <span className="font-medium">{value}</span>
-  </div>
-);
+interface PhilosophyPointProps {
+  title: string;
+  description: string;
+}
 
-const SocialLink = ({ platform, url, handle }: { platform: string; url: string; handle?: string }) => (
-  <a href={url} target="_blank" rel="noopener noreferrer" className="flex items-center p-3 hover:bg-white/5 rounded-lg transition-colors">
-    <span className="mr-3">
-      {platform === 'Instagram' && '📸'}
-      {platform === 'TikTok' && '🎵'}
-      {platform === 'Facebook' && '📘'}
-      {platform === 'YouTube' && '▶️'}
-      {platform === 'LinkedIn' && '💼'}
-      {platform === 'WhatsApp Channel' && '📢'}
-    </span>
-    <div>
-      <p className="font-medium">{platform}</p>
-      {handle && <p className="text-sm text-blue-300">{handle}</p>}
+const PhilosophyPoint = ({ title, description }: PhilosophyPointProps) => (
+  <div className="flex items-start">
+    <div className="bg-cyan-500/20 p-2 rounded-lg mr-4 mt-1">
+      <svg
+        className="w-5 h-5 text-cyan-400"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M5 13l4 4L19 7"
+        />
+      </svg>
     </div>
-  </a>
+    <div>
+      <h4 className="font-bold text-lg mb-1">{title}</h4>
+      <p className="text-white/80">{description}</p>
+    </div>
+  </div>
 );
 
-const ProjectCard = ({ title, description, url }: { title: string; description: string; url: string }) => (
-  <a href={url} className="block p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors mb-3">
-    <h3 className="font-medium mb-1">⚕️ {title}</h3>
-    <p className="text-sm text-blue-300">{description}</p>
-  </a>
+interface AchievementProps {
+  title: string;
+  description: string;
+  year: string;
+}
+
+const Achievement = ({ title, description, year }: AchievementProps) => (
+  <div className="border-l-4 border-cyan-500 pl-6 py-2">
+    <div className="flex justify-between items-start">
+      <h3 className="font-bold text-xl">{title}</h3>
+      <span className="bg-white/10 px-3 py-1 rounded-full text-sm">{year}</span>
+    </div>
+    <p className="text-white/80 mt-2">{description}</p>
+  </div>
 );
 
-export default ContactPage;
+export default AboutPage;
