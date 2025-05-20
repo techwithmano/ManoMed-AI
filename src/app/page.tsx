@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { FaHeartbeat } from 'react-icons/fa';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Loading from '@/components/Loading';
 
 const steps = [
   { icon: '🔍', title: 'Analyze Symptoms', desc: 'Enter symptoms and medical history to begin the analysis.' },
@@ -34,17 +35,10 @@ const LandingPage = () => {
 
   if (isLoading) {
     return (
-      <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50">
-        <div className="text-center bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
-          <FaHeartbeat className="text-blue-600 text-6xl mb-4 animate-pulse mx-auto" />
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
-            Processing Your Information
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400">
-            Please wait while we prepare your analysis...
-          </p>
-        </div>
-      </div>
+      <Loading
+        title="Processing Your Information"
+        description="Please wait while we prepare your personalized health analysis..."
+      />
     );
   }
 
