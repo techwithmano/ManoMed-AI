@@ -11,13 +11,13 @@ interface LoadingProps {
 const Loading: React.FC<LoadingProps> = ({ title, description }) => (
   <div className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 bg-gradient-to-b from-background to-secondary/10">
     <div className="text-center space-y-6 max-w-md mx-auto">
-      <div className="relative w-32 h-32 sm:w-40 sm:h-40">
+      <div className="relative w-24 h-24 sm:w-32 sm:h-32">
         <div className="absolute inset-0 border-4 border-primary/20 rounded-full animate-pulse"></div>
         <div className="absolute inset-0 border-4 border-primary rounded-full animate-spin border-t-transparent"></div>
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="relative">
             <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse"></div>
-            <Loader2 className="w-16 h-16 sm:w-20 sm:h-20 text-primary animate-spin" />
+            <Loader2 className="w-12 h-12 sm:w-16 sm:h-16 text-primary animate-spin" />
           </div>
         </div>
       </div>
