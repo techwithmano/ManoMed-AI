@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { FaHeartbeat } from 'react-icons/fa';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const steps = [
   { icon: '🔍', title: 'Analyze Symptoms', desc: 'Enter symptoms and medical history to begin the analysis.' },
@@ -12,19 +13,43 @@ const steps = [
 
 const LandingPage = () => {
   const [showForm, setShowForm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: '',
     age: '',
     gender: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     // Store the form data in localStorage
     localStorage.setItem('userData', JSON.stringify(formData));
+    // Add a small delay to show the loading state
+    await new Promise(resolve => setTimeout(resolve, 1500));
     // Navigate to the analysis page
-    window.location.href = '/ManoMedai';
+    router.push('/ManoMedai');
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <FaHeartbeat className="text-blue-600 text-6xl mb-4 animate-pulse mx-auto" />
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
+            Processing Your Information
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400">
+            Please wait while we prepare your analysis...
+          </p>
+          <div className="mt-8 flex justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-background text-foreground flex flex-col">
