@@ -196,9 +196,12 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-primary">Potential Conditions</h2>
         {conditions.length > 0 && (
-          <Button onClick={generatePDF} className="flex items-center gap-2">
+          <Button
+            onClick={generatePDF}
+            className="flex items-center gap-2"
+          >
             <Download className="w-4 h-4" />
-            Download Complete Report (PDF)
+            Download Report
           </Button>
         )}
       </div>
