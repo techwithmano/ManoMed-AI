@@ -11,19 +11,27 @@ import jsPDF from 'jspdf';
 
 function ConditionsContent() {
   const searchParams = useSearchParams();
+  const name = searchParams.get('name') || '';
+  const age = searchParams.get('age') || '';
+  const gender = searchParams.get('gender') || '';
+  const email = searchParams.get('email') || '';
   const symptoms = searchParams.get('symptoms') || '';
   const medicalHistory = searchParams.get('medicalHistory') || '';
   const answersRaw = searchParams.get('answers') || '[]';
+  const questionsRaw = searchParams.get('questions') || '[]';
 
   const [conditions, setConditions] = useState<SymptomAnalysisOutput | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchConditions = async () => {
       try {
-        // Decode and parse answers
+        // Decode and parse answers and questions
         const decodedAnswers = decodeURIComponent(answersRaw);
+        const decodedQuestions = decodeURIComponent(questionsRaw);
         const parsedAnswers: string[] = JSON.parse(decodedAnswers);
+        const parsedQuestions: string[] = JSON.parse(decodedQuestions);
 
         const result = await symptomAnalysis({
           symptoms,
@@ -32,7 +40,7 @@ function ConditionsContent() {
         });
 
         setConditions(result);
-        setError(null);
+        setIsLoading(false);
       } catch (err) {
         console.error("Symptom analysis failed:", err);
         setError("Unable to analyze symptoms. Please try again.");
@@ -41,7 +49,7 @@ function ConditionsContent() {
     };
 
     fetchConditions();
-  }, [symptoms, medicalHistory, answersRaw]);
+  }, [symptoms, medicalHistory, answersRaw, questionsRaw]);
 
   // Error state
   if (error) {
@@ -87,22 +95,46 @@ function ConditionsContent() {
     doc.save('Symptom_Analysis_Report.pdf');
   };
 
-  // Loading or results state
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen px-6 py-12">
+        <div className="text-center space-y-4">
+          <div className="relative w-24 h-24">
+            <div className="absolute inset-0 border-4 border-primary/20 rounded-full"></div>
+            <div className="absolute inset-0 border-4 border-primary rounded-full animate-spin border-t-transparent"></div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Loader2 className="w-12 h-12 text-primary animate-pulse" />
+            </div>
+          </div>
+          <p className="text-lg font-medium text-primary">Analyzing your symptoms...</p>
+          <p className="text-sm text-muted-foreground">This may take a few moments</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Results state
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-6 py-12">
       {conditions ? (
         <>
-          <ConditionDisplay conditions={conditions} />
+          <ConditionDisplay
+            conditions={conditions}
+            name={name}
+            age={age}
+            gender={gender}
+            email={email}
+            symptoms={symptoms}
+            medicalHistory={medicalHistory}
+            questions={JSON.parse(decodeURIComponent(questionsRaw))}
+            answers={JSON.parse(decodeURIComponent(answersRaw))}
+          />
           <div className="mt-6">
             <Disclaimer />
           </div>
         </>
-      ) : (
-        <div className="flex items-center space-x-4 text-muted-foreground">
-          <Loader2 className="w-8 h-8 animate-spin" />
-          <span>Analyzing symptoms...</span>
-        </div>
-      )}
+      ) : null}
     </div>
   );
 }
@@ -113,9 +145,15 @@ export default function ConditionsPage() {
     <Suspense
       fallback={
         <div className="flex flex-col items-center justify-center min-h-screen px-6 py-12">
-          <div className="flex items-center space-x-4 text-muted-foreground">
-            <Loader2 className="w-8 h-8 animate-spin" />
-            <span>Loading...</span>
+          <div className="text-center space-y-4">
+            <div className="relative w-24 h-24">
+              <div className="absolute inset-0 border-4 border-primary/20 rounded-full"></div>
+              <div className="absolute inset-0 border-4 border-primary rounded-full animate-spin border-t-transparent"></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Loader2 className="w-12 h-12 text-primary animate-pulse" />
+              </div>
+            </div>
+            <p className="text-lg font-medium text-primary">Loading analysis...</p>
           </div>
         </div>
       }

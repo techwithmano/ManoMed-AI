@@ -2,25 +2,42 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface SymptomInputFormProps {
-  onAnalysis: (symptoms: string, medicalHistory: string) => void;
+  onAnalysis: (data: {
+    name: string;
+    age: string;
+    gender: string;
+    email: string;
+    symptoms: string;
+    medicalHistory: string;
+  }) => void;
 }
 
 export const SymptomInputForm: React.FC<SymptomInputFormProps> = ({ onAnalysis }) => {
-  const [symptoms, setSymptoms] = useState("");
-  const [medicalHistory, setMedicalHistory] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    age: "",
+    gender: "",
+    email: "",
+    symptoms: "",
+    medicalHistory: "",
+  });
   const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleAnalysis = async () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     setIsLoading(true);
     try {
-      onAnalysis(symptoms, medicalHistory);
-        setError(null);
+      onAnalysis(formData);
+      setError(null);
     } catch (error: any) {
       console.error("Error during symptom analysis:", error);
       setError("Failed to analyze symptoms. Please try again.");
@@ -29,45 +46,109 @@ export const SymptomInputForm: React.FC<SymptomInputFormProps> = ({ onAnalysis }
     }
   };
 
+  const handleChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
   return (
-    <div className="mb-8 p-8 rounded-2xl bg-secondary/10 shadow-lg">
-      <h2 className="text-2xl font-semibold mb-4 text-primary">Enter Your Symptoms</h2>
-        {error && (
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle className="text-2xl font-bold text-center">Patient Information</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Full Name</Label>
+              <Input
+                id="name"
+                value={formData.name}
+                onChange={(e) => handleChange("name", e.target.value)}
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="age">Age</Label>
+              <Input
+                id="age"
+                type="number"
+                min="0"
+                max="120"
+                value={formData.age}
+                onChange={(e) => handleChange("age", e.target.value)}
+                placeholder="Enter your age"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="gender">Gender</Label>
+              <Select
+                value={formData.gender}
+                onValueChange={(value) => handleChange("gender", value)}
+                required
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select gender" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="male">Male</SelectItem>
+                  <SelectItem value="female">Female</SelectItem>
+                  <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={formData.email}
+                onChange={(e) => handleChange("email", e.target.value)}
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="symptoms">Current Symptoms</Label>
+            <Textarea
+              id="symptoms"
+              value={formData.symptoms}
+              onChange={(e) => handleChange("symptoms", e.target.value)}
+              placeholder="Describe your symptoms in detail..."
+              className="min-h-[100px]"
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="medicalHistory">Medical History</Label>
+            <Textarea
+              id="medicalHistory"
+              value={formData.medicalHistory}
+              onChange={(e) => handleChange("medicalHistory", e.target.value)}
+              placeholder="Share any relevant medical history, allergies, or current medications..."
+              className="min-h-[100px]"
+            />
+          </div>
+
+          {error && (
             <Alert variant="destructive">
-                <AlertTitle>Error</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>{error}</AlertDescription>
             </Alert>
-        )}
-      <div className="grid gap-6">
-        <div>
-          <label htmlFor="symptoms" className="block text-sm font-medium text-foreground mb-2">
-            Symptoms (comma-separated):
-          </label>
-          <Input
-            type="text"
-            id="symptoms"
-            value={symptoms}
-            onChange={(e) => setSymptoms(e.target.value)}
-            placeholder="e.g., Headache, Fever, Cough"
-            className="rounded-md shadow-sm"
-          />
-        </div>
-        <div>
-          <label htmlFor="medicalHistory" className="block text-sm font-medium text-foreground mb-2">
-            Medical History (optional):
-          </label>
-          <Textarea
-            id="medicalHistory"
-            value={medicalHistory}
-            onChange={(e) => setMedicalHistory(e.target.value)}
-            placeholder="e.g., Asthma, Allergies"
-            className="rounded-md shadow-sm"
-          />
-        </div>
-        <Button onClick={handleAnalysis} disabled={isLoading} className="w-full">
-          {isLoading ? "Analyzing..." : "Analyze Symptoms"}
-        </Button>
-      </div>
-    </div>
+          )}
+
+          <Button type="submit" disabled={isLoading} className="w-full">
+            {isLoading ? "Analyzing..." : "Begin Analysis"}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
   );
 };

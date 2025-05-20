@@ -6,8 +6,24 @@ import { useRouter } from 'next/navigation';
 export default function Home() {
   const router = useRouter();
 
-  const handleAnalysis = (symptoms: string, medicalHistory: string) => {
-    router.push(`/questionnaire?symptoms=${encodeURIComponent(symptoms)}&medicalHistory=${encodeURIComponent(medicalHistory)}`);
+  const handleAnalysis = (data: {
+    name: string;
+    age: string;
+    gender: string;
+    email: string;
+    symptoms: string;
+    medicalHistory: string;
+  }) => {
+    const queryParams = new URLSearchParams({
+      name: data.name,
+      age: data.age,
+      gender: data.gender,
+      email: data.email,
+      symptoms: data.symptoms,
+      medicalHistory: data.medicalHistory
+    });
+    
+    router.push(`/questionnaire?${queryParams.toString()}`);
   };
 
   return (
@@ -15,10 +31,10 @@ export default function Home() {
       <div className="text-center mb-10">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-primary mb-4">ManoMed AI</h1>
         <p className="text-muted-foreground text-lg max-w-xl">
-          Begin your health journey—enter your symptoms and medical history to get AI-assisted recommendations.
+          Begin your health journey—enter your information to get AI-assisted recommendations.
         </p>
       </div>
-      <div className="w-full max-w-xl">
+      <div className="w-full max-w-2xl">
         <SymptomInputForm onAnalysis={handleAnalysis} />
       </div>
     </div>
