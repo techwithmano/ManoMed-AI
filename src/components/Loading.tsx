@@ -1,7 +1,7 @@
 'use client';
 
-import { Loader2 } from 'lucide-react';
 import React from 'react';
+import { Loader2 } from 'lucide-react';
 
 interface LoadingProps {
   title: string;
@@ -9,30 +9,25 @@ interface LoadingProps {
 }
 
 const Loading: React.FC<LoadingProps> = ({ title, description }) => (
-  <div className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-8 bg-gradient-to-b from-background to-secondary/10">
-    <div className="text-center space-y-6 max-w-md mx-auto">
+  <div className="flex items-center justify-center min-h-screen bg-gradient-to-tr from-gray-100 to-gray-200 p-6">
+    <div className="flex flex-col items-center bg-white shadow-xl rounded-2xl p-8 max-w-sm w-full animate-fadeIn">
       <div className="relative w-24 h-24 sm:w-32 sm:h-32">
-        <div className="absolute inset-0 border-4 border-primary/20 rounded-full animate-pulse"></div>
-        <div className="absolute inset-0 border-4 border-primary rounded-full animate-spin border-t-transparent"></div>
+        <div className="absolute inset-0 rounded-full border-2 border-blue-200 animate-pulse"></div>
+        <div className="absolute inset-0 rounded-full border-4 border-blue-500 animate-spin border-t-transparent"></div>
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="relative">
-            <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse"></div>
-            <Loader2 className="w-12 h-12 sm:w-16 sm:h-16 text-primary animate-spin" />
-          </div>
+          <Loader2 className="w-12 h-12 sm:w-16 sm:h-16 text-blue-500 animate-spin-slow" />
         </div>
       </div>
-      <div className="space-y-3">
-        <h2 className="text-2xl sm:text-3xl font-bold text-primary animate-pulse">
-          {title}
-        </h2>
-        <p className="text-base sm:text-lg text-muted-foreground">
-          {description}
-        </p>
-      </div>
-      <div className="flex justify-center space-x-2">
-        <div className="w-2 h-2 rounded-full bg-primary/60 animate-bounce [animation-delay:-0.3s]"></div>
-        <div className="w-2 h-2 rounded-full bg-primary/60 animate-bounce [animation-delay:-0.15s]"></div>
-        <div className="w-2 h-2 rounded-full bg-primary/60 animate-bounce"></div>
+      <h2 className="mt-6 text-xl sm:text-2xl font-semibold text-gray-700 text-center">
+        {title}
+      </h2>
+      <p className="mt-2 text-sm sm:text-base text-gray-500 text-center italic">
+        {description}
+      </p>
+      <div className="flex mt-6 space-x-2">
+        <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce delay-150"></span>
+        <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce delay-300"></span>
+        <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></span>
       </div>
     </div>
   </div>
