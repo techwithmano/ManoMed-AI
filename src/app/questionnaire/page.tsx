@@ -138,18 +138,10 @@ function QuestionnaireContent() {
 export default function QuestionnairePage() {
   return (
     <Suspense fallback={
-      <div className="flex flex-col items-center justify-center min-h-screen p-8">
-        <div className="text-center space-y-4">
-          <div className="relative w-24 h-24">
-            <div className="absolute inset-0 border-4 border-primary/20 rounded-full"></div>
-            <div className="absolute inset-0 border-4 border-primary rounded-full animate-spin border-t-transparent"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Loader2 className="w-12 h-12 text-primary animate-pulse" />
-            </div>
-          </div>
-          <p className="text-lg font-medium text-primary">Loading questionnaire...</p>
-        </div>
-      </div>
+      <Loading
+        title="Loading Questionnaire"
+        description="Preparing your personalized health assessment..."
+      />
     }>
       <QuestionnaireContent />
     </Suspense>
