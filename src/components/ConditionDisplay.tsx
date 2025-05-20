@@ -193,7 +193,15 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4 text-primary">Potential Conditions</h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-semibold text-primary">Potential Conditions</h2>
+        {conditions.length > 0 && (
+          <Button onClick={generatePDF} className="flex items-center gap-2">
+            <Download className="w-4 h-4" />
+            Download Complete Report (PDF)
+          </Button>
+        )}
+      </div>
       {conditions.length > 0 ? (
         <>
           <div className="grid gap-6">
@@ -232,13 +240,6 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
                 </CardContent>
               </Card>
             ))}
-          </div>
-
-          <div className="flex justify-center mt-8">
-            <Button onClick={generatePDF} className="flex items-center gap-2">
-              <Download className="w-4 h-4" />
-              Download Complete Report (PDF)
-            </Button>
           </div>
         </>
       ) : (
