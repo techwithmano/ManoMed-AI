@@ -67,27 +67,64 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
     const doc = new jsPDF("portrait", "pt", "a4");
     const width = doc.internal.pageSize.getWidth();
     const height = doc.internal.pageSize.getHeight();
-    const margin = 40;
+    const margin = 50; // Increased margin
+    const bleed = 10; // Added bleed area
+    const contentWidth = width - (margin * 2);
     let cursorY = margin;
+
+    // Typography and color definitions
+    const fonts = {
+      heading: 'helvetica',
+      body: 'helvetica',
+      monospace: 'courier'
+    };
+
+    const weights = {
+      regular: 'normal',
+      medium: 'bold',
+      bold: 'bold'
+    };
+
+    const colors = {
+      primary: '#1a365d',    // Darker blue for headers
+      secondary: '#2d3748',  // Dark gray for body text
+      accent: '#3182ce',     // Bright blue for links
+      warning: '#c53030',    // Red for disclaimer
+      background: '#f7fafc', // Lighter background
+      border: '#e2e8f0'      // Border color
+    };
+
+    const spacing = {
+      section: 40,    // Space between major sections
+      paragraph: 20,  // Space between paragraphs
+      line: 18,       // Line height
+      element: 10     // Space between related elements
+    };
 
     // --- Header / Footer setup ---
     const footer = (page: number, totalPages: number) => {
-      doc.setFontSize(10);
+      // Add separator line
+      doc.setDrawColor(colors.border);
+      doc.setLineWidth(0.5);
+      doc.line(margin, height - 40, width - margin, height - 40);
+      
+      doc.setFontSize(11);
+      doc.setTextColor(colors.secondary);
       const footerText = `Page ${page} of ${totalPages} | ManoMed AI Report | Generated: ${new Date().toLocaleString()}`;
-      doc.text(footerText, width / 2, height - 20, { align: 'center' });
+      doc.text(footerText, width / 2, height - 25, { align: 'center' });
     };
 
     // Cover Page ---
-    doc.setFillColor('#f0f4f8');
+    doc.setFillColor(colors.background);
     doc.rect(0, 0, width, height, 'F');
     
     // Add logo or icon
+    doc.setFont(fonts.heading, weights.bold);
     doc.setFontSize(40);
-    doc.setTextColor('#2980b9');
+    doc.setTextColor(colors.primary);
     doc.text('ManoMed AI', width/2, height/2 - 60, { align: 'center' });
     
     doc.setFontSize(24);
-    doc.setTextColor('#2c3e50');
     doc.text('Comprehensive Medical Analysis Report', width/2, height/2 - 20, { align: 'center' });
     
     doc.setFontSize(16);
@@ -95,16 +132,18 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
     doc.text(`Date: ${new Date().toLocaleDateString()}`, width/2, height/2 + 50, { align: 'center' });
     
     // Add a decorative line
-    doc.setDrawColor('#2980b9');
+    doc.setDrawColor(colors.accent);
     doc.setLineWidth(2);
     doc.line(margin, height/2 + 80, width - margin, height/2 + 80);
     
     doc.addPage();
 
     // Table of Contents ---
-    doc.setFontSize(24).setTextColor('#34495e');
+    doc.setFont(fonts.heading, weights.bold);
+    doc.setFontSize(24);
+    doc.setTextColor(colors.primary);
     doc.text('Table of Contents', margin, cursorY);
-    cursorY += 40;
+    cursorY += spacing.section;
     
     const toc = [
       { title: 'Patient Information', page: 3 },
@@ -115,20 +154,34 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
       { title: 'Disclaimer', page: 8 },
     ];
     
-    doc.setFontSize(12).setTextColor('#2c3e50');
+    doc.setFont(fonts.body, weights.regular);
+    doc.setFontSize(14);
+    doc.setTextColor(colors.secondary);
     toc.forEach((item, idx) => {
-      const dots = '.'.repeat(50);
-      const text = `${idx + 1}. ${item.title} ${dots} ${item.page}`;
-      doc.text(text, margin, cursorY);
-      cursorY += 25;
+      const pageNumWidth = 30;
+      const titleWidth = width - margin * 2 - pageNumWidth;
+      
+      // Title
+      doc.text(`${idx + 1}. ${item.title}`, margin, cursorY);
+      
+      // Page number
+      doc.text(item.page.toString(), width - margin - pageNumWidth, cursorY);
+      
+      // Dots
+      const dots = '.'.repeat(Math.floor((titleWidth - doc.getTextWidth(item.title)) / 5));
+      doc.text(dots, margin + doc.getTextWidth(`${idx + 1}. ${item.title}`), cursorY);
+      
+      cursorY += spacing.line;
     });
     doc.addPage();
     cursorY = margin;
 
     // Patient Information ---
-    doc.setFontSize(20).setTextColor('#16a085');
+    doc.setFont(fonts.heading, weights.bold);
+    doc.setFontSize(24);
+    doc.setTextColor(colors.primary);
     doc.text('1. Patient Information', margin, cursorY);
-    cursorY += 30;
+    cursorY += spacing.section;
     
     const info = [
       ['Name', name],
@@ -144,23 +197,27 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
       theme: 'grid',
       body: info,
       styles: { 
-        cellPadding: 6, 
-        fontSize: 12, 
-        textColor: '#2c3e50',
-        lineColor: '#e0e0e0',
-        lineWidth: 0.5
+        cellPadding: 8,
+        fontSize: 14,
+        textColor: colors.secondary,
+        lineColor: colors.border,
+        lineWidth: 0.5,
+        font: fonts.body,
+        fontStyle: weights.regular
       },
       columnStyles: { 
-        0: { fontStyle: 'bold', cellWidth: 150, textColor: '#2980b9' }, 
+        0: { fontStyle: weights.bold, cellWidth: 150, textColor: colors.primary }, 
         1: { cellWidth: width - margin*2 - 150 } 
       }
     });
-    cursorY = (doc as any).lastAutoTable.finalY + 30;
+    cursorY = (doc as any).lastAutoTable.finalY + spacing.section;
 
     // Symptoms & Medical History ---
-    doc.setFontSize(20).setTextColor('#16a085');
+    doc.setFont(fonts.heading, weights.bold);
+    doc.setFontSize(24);
+    doc.setTextColor(colors.primary);
     doc.text('2. Symptoms & History', margin, cursorY);
-    cursorY += 30;
+    cursorY += spacing.section;
     
     autoTable(doc, {
       startY: cursorY,
@@ -171,48 +228,52 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
         ['Medical History', medicalHistory || 'None provided'],
       ],
       styles: { 
-        cellPadding: 6, 
-        fontSize: 12, 
-        textColor: '#2c3e50',
-        lineColor: '#e0e0e0',
-        lineWidth: 0.5
+        cellPadding: 8,
+        fontSize: 14,
+        textColor: colors.secondary,
+        lineColor: colors.border,
+        lineWidth: 0.5,
+        font: fonts.body,
+        fontStyle: weights.regular
       },
       columnStyles: { 
-        0: { fontStyle: 'bold', cellWidth: 150, textColor: '#2980b9' }, 
+        0: { fontStyle: weights.bold, cellWidth: 150, textColor: colors.primary }, 
         1: { cellWidth: width - margin*2 - 150 } 
       }
     });
-    cursorY = (doc as any).lastAutoTable.finalY + 30;
+    cursorY = (doc as any).lastAutoTable.finalY + spacing.section;
 
     // Q&A Session ---
     doc.addPage();
     cursorY = margin;
-    doc.setFontSize(20).setTextColor('#16a085');
+    doc.setFont(fonts.heading, weights.bold);
+    doc.setFontSize(24);
+    doc.setTextColor(colors.primary);
     doc.text('3. Q&A Session', margin, cursorY);
-    cursorY += 30;
+    cursorY += spacing.section;
 
     if (Array.isArray(questions) && Array.isArray(answers) && questions.length > 0 && answers.length > 0) {
       questions.forEach((question, index) => {
         const answer = answers[index] || 'No answer provided';
         
         // Question box
-        doc.setFillColor('#f8f9fa');
-        doc.roundedRect(margin, cursorY - 10, width - margin * 2, 30, 3, 3, 'F');
+        doc.setFillColor(colors.background);
+        doc.roundedRect(margin, cursorY - 10, width - margin * 2, 40, 3, 3, 'F');
         
         // Question
-        doc.setTextColor('#2980b9');
-        doc.setFontSize(12);
-        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(colors.primary);
+        doc.setFont(fonts.body, weights.bold);
+        doc.setFontSize(14);
         const questionLines = doc.splitTextToSize(`Q${index + 1}: ${question}`, width - margin * 2 - 20);
         doc.text(questionLines, margin + 10, cursorY + 5);
-        cursorY += (questionLines.length * 15) + 20;
+        cursorY += (questionLines.length * spacing.line) + spacing.paragraph;
         
         // Answer
-        doc.setTextColor('#2c3e50');
-        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(colors.secondary);
+        doc.setFont(fonts.body, weights.regular);
         const answerLines = doc.splitTextToSize(answer, width - margin * 2 - 40);
         doc.text(answerLines, margin + 30, cursorY);
-        cursorY += (answerLines.length * 15) + 30;
+        cursorY += (answerLines.length * spacing.line) + spacing.section;
         
         if (cursorY > height - margin) {
           doc.addPage();
@@ -220,41 +281,45 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
         }
       });
     } else {
-      doc.setTextColor('#666');
+      doc.setTextColor(colors.secondary);
       doc.text('No Q&A session data available', margin, cursorY);
-      cursorY += 30;
+      cursorY += spacing.section;
     }
 
     // Analysis Results ---
     doc.addPage();
     cursorY = margin;
-    doc.setFontSize(20).setTextColor('#16a085');
+    doc.setFont(fonts.heading, weights.bold);
+    doc.setFontSize(24);
+    doc.setTextColor(colors.primary);
     doc.text('4. Analysis Results', margin, cursorY);
-    cursorY += 30;
+    cursorY += spacing.section;
 
     conditions.forEach((condition, index) => {
+      const descriptionLines = doc.splitTextToSize(condition.description || '', width - margin * 2 - 40);
+      const boxHeight = Math.max(60, descriptionLines.length * spacing.line + 30);
+      
       // Condition box
-      doc.setFillColor('#f8f9fa');
-      doc.roundedRect(margin, cursorY - 10, width - margin * 2, 40, 3, 3, 'F');
+      doc.setFillColor(colors.background);
+      doc.roundedRect(margin, cursorY - 10, width - margin * 2, boxHeight, 3, 3, 'F');
       
       // Condition name
-      doc.setTextColor('#2980b9');
-      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(colors.primary);
+      doc.setFont(fonts.body, weights.bold);
       doc.text(`Condition ${index + 1}: ${condition.condition}`, margin + 10, cursorY + 5);
-      cursorY += 25;
+      cursorY += spacing.line;
 
       // Likelihood
-      doc.setTextColor('#2c3e50');
-      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(colors.secondary);
+      doc.setFont(fonts.body, weights.regular);
       const likelihoodText = `Likelihood: ${(condition.likelihood * 100).toFixed(2)}%`;
       doc.text(likelihoodText, margin + 30, cursorY);
-      cursorY += 20;
+      cursorY += spacing.line;
 
       // Description
       if (condition.description) {
-        const descriptionLines = doc.splitTextToSize(condition.description, width - margin * 2 - 40);
         doc.text(descriptionLines, margin + 30, cursorY);
-        cursorY += (descriptionLines.length * 15) + 30;
+        cursorY += (descriptionLines.length * spacing.line) + spacing.section;
       }
 
       if (cursorY > height - margin) {
@@ -266,9 +331,11 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
     // Recommendations ---
     doc.addPage();
     cursorY = margin;
-    doc.setFontSize(20).setTextColor('#16a085');
+    doc.setFont(fonts.heading, weights.bold);
+    doc.setFontSize(24);
+    doc.setTextColor(colors.primary);
     doc.text('5. Recommendations', margin, cursorY);
-    cursorY += 30;
+    cursorY += spacing.section;
     
     const recommendations = [
       'Consult with a healthcare provider for professional medical advice',
@@ -278,20 +345,26 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
       'Schedule regular check-ups as advised'
     ];
     
+    doc.setFont(fonts.body, weights.regular);
+    doc.setFontSize(14);
+    doc.setTextColor(colors.secondary);
     recommendations.forEach((rec, index) => {
-      doc.setFontSize(12);
       doc.text(`• ${rec}`, margin + 20, cursorY);
-      cursorY += 20;
+      cursorY += spacing.line;
     });
 
     // Disclaimer ---
     doc.addPage();
     cursorY = margin;
-    doc.setFontSize(20).setTextColor('#c0392b');
+    doc.setFont(fonts.heading, weights.bold);
+    doc.setFontSize(24);
+    doc.setTextColor(colors.warning);
     doc.text('6. Disclaimer', margin, cursorY);
-    cursorY += 30;
+    cursorY += spacing.section;
     
-    doc.setFontSize(12).setTextColor('#2c3e50');
+    doc.setFont(fonts.body, weights.regular);
+    doc.setFontSize(14);
+    doc.setTextColor(colors.secondary);
     const disclaimer = [
       'This report is generated by ManoMed AI and is not a substitute for professional medical advice.',
       'Always consult a qualified healthcare provider for proper diagnosis and treatment.',
@@ -302,7 +375,7 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
     disclaimer.forEach((text, index) => {
       const lines = doc.splitTextToSize(text, width - margin * 2);
       doc.text(lines, margin, cursorY);
-      cursorY += (lines.length * 15) + 10;
+      cursorY += (lines.length * spacing.line) + spacing.paragraph;
     });
 
     // Add page numbers to all pages
