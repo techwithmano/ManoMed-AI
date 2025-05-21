@@ -156,7 +156,7 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
     cursorY += spacing.section;
     
     const toc = [
-      { title: 'Patient Information', page: 2 },
+      { title: 'Patient Information', page: 3 },
       { title: 'Symptoms & History', page: 3 },
       { title: 'Q&A Session', page: 4 },
       { title: 'Analysis Results', page: 5 },
