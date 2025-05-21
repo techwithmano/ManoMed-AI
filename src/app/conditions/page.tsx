@@ -42,8 +42,15 @@ function ConditionsContent() {
           
           // Validate arrays
           if (!Array.isArray(questions) || !Array.isArray(answers)) {
-            throw new Error('Invalid questions or answers format');
+            console.error('Invalid questions or answers format:', { questions, answers });
+            questions = [];
+            answers = [];
           }
+          
+          // Ensure both arrays have the same length
+          const minLength = Math.min(questions.length, answers.length);
+          questions = questions.slice(0, minLength);
+          answers = answers.slice(0, minLength);
           
           setParsedQuestions(questions);
           setParsedAnswers(answers);

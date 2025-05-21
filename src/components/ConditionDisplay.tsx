@@ -148,6 +148,9 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
 
     // Only add Q&A table if we have valid data
     if (Array.isArray(questions) && Array.isArray(answers) && questions.length > 0 && answers.length > 0) {
+      // Log the data for debugging
+      console.log('Generating Q&A section with:', { questions, answers });
+      
       const qaBody = questions.map((q, i) => {
         const question = q || 'No question provided';
         const answer = answers[i] || 'No answer provided';
@@ -166,11 +169,12 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
           1: { cellWidth: width * 0.4 }
         }
       });
+      cursorY = (doc as any).lastAutoTable.finalY + 30;
     } else {
-      // Add a message if no Q&A data is available
+      console.warn('Q&A data is missing or invalid:', { questions, answers });
       doc.text('No Q&A session data available', margin, cursorY);
+      cursorY += 30;
     }
-    cursorY = (doc as any).lastAutoTable?.finalY + 30 || cursorY + 30;
 
     // Analysis Results ---
     doc.addPage();

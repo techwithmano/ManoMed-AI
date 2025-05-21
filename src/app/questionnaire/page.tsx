@@ -46,8 +46,19 @@ function QuestionnaireContent() {
     if (currentQuestionIndex < (questions?.length || 0) - 1) {
       setCurrentQuestionIndex(prev => prev + 1);
     } else {
+      // Ensure we have valid questions and answers before proceeding
+      if (!questions || questions.length === 0) {
+        console.error('No questions available');
+        return;
+      }
+
       const answersString = encodeURIComponent(JSON.stringify(answers));
       const questionsString = encodeURIComponent(JSON.stringify(questions));
+      
+      // Log the data being passed for debugging
+      console.log('Questions:', questions);
+      console.log('Answers:', answers);
+      
       const queryParams = new URLSearchParams({
         name,
         age,
