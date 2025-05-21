@@ -52,12 +52,15 @@ function QuestionnaireContent() {
         return;
       }
 
+      // Add detailed debugging logs
+      console.log('Questionnaire - Questions before encoding:', questions);
+      console.log('Questionnaire - Answers before encoding:', answers);
+      
       const answersString = encodeURIComponent(JSON.stringify(answers));
       const questionsString = encodeURIComponent(JSON.stringify(questions));
       
-      // Log the data being passed for debugging
-      console.log('Questions:', questions);
-      console.log('Answers:', answers);
+      console.log('Questionnaire - Encoded questions:', questionsString);
+      console.log('Questionnaire - Encoded answers:', answersString);
       
       const queryParams = new URLSearchParams({
         name,
@@ -69,7 +72,11 @@ function QuestionnaireContent() {
         answers: answersString,
         questions: questionsString
       });
-      router.push(`/conditions?${queryParams.toString()}`);
+      
+      const finalUrl = `/conditions?${queryParams.toString()}`;
+      console.log('Questionnaire - Final URL:', finalUrl);
+      
+      router.push(finalUrl);
     }
   };
 

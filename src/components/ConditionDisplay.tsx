@@ -37,6 +37,14 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
   questions,
   answers,
 }) => {
+  // Add debugging logs
+  console.log('ConditionDisplay received Q&A data:', {
+    questionsLength: questions?.length,
+    answersLength: answers?.length,
+    questions,
+    answers
+  });
+
   const getIcon = (likelihood: number) => {
     if (likelihood > 0.75) {
       return <CheckCircle className="w-4 h-4 text-green-500 mr-1" />;
@@ -48,6 +56,14 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
   };
 
   const generatePDF = () => {
+    // Add debugging logs at start of PDF generation
+    console.log('Starting PDF generation with Q&A data:', {
+      questionsLength: questions?.length,
+      answersLength: answers?.length,
+      questions,
+      answers
+    });
+
     const doc = new jsPDF("portrait", "pt", "a4");
     const width = doc.internal.pageSize.getWidth();
     const height = doc.internal.pageSize.getHeight();
