@@ -95,20 +95,20 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
     };
 
     const spacing = {
-      section: 40,    // Space between major sections
-      paragraph: 20,  // Space between paragraphs
-      line: 18,       // Line height
-      element: 10     // Space between related elements
+      section: 35,    // Reduced from 40
+      paragraph: 15,  // Reduced from 20
+      line: 16,       // Reduced from 18
+      element: 8      // Reduced from 10
     };
 
-    // Font sizes (reduced by 5pt)
+    // Font sizes (adjusted for medical report)
     const fontSizes = {
-      coverTitle: 35,     // was 40
-      coverSubtitle: 19,  // was 24
-      coverInfo: 11,      // was 16
-      sectionTitle: 19,   // was 24
-      bodyText: 9,        // was 14
-      footer: 6,          // was 11
+      coverTitle: 37,     // was 35
+      coverSubtitle: 21,  // was 19
+      coverInfo: 13,      // was 11
+      sectionTitle: 21,   // was 19
+      bodyText: 11,       // was 9
+      footer: 9,          // was 6 - increased for better readability
     };
 
     // --- Header / Footer setup ---
@@ -116,12 +116,12 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
       // Add separator line
       doc.setDrawColor(colors.border);
       doc.setLineWidth(0.5);
-      doc.line(margin, height - 40, width - margin, height - 40);
+      doc.line(margin, height - 35, width - margin, height - 35);
       
       doc.setFontSize(fontSizes.footer);
       doc.setTextColor(colors.secondary);
       const footerText = `Page ${page} of ${totalPages} | ManoMed AI Report | Generated: ${new Date().toLocaleString()}`;
-      doc.text(footerText, width / 2, height - 25, { align: 'center' });
+      doc.text(footerText, width / 2, height - 20, { align: 'center' });
     };
 
     // Cover Page ---
@@ -268,7 +268,7 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
         
         // Question box
         doc.setFillColor(colors.background);
-        doc.roundedRect(margin, cursorY - 10, width - margin * 2, 40, 3, 3, 'F');
+        doc.roundedRect(margin, cursorY - 8, width - margin * 2, 35, 3, 3, 'F');
         
         // Question
         doc.setTextColor(colors.primary);
@@ -283,7 +283,7 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
         doc.setFont(fonts.body, weights.regular);
         const answerLines = doc.splitTextToSize(answer, width - margin * 2 - 40);
         doc.text(answerLines, margin + 30, cursorY);
-        cursorY += (answerLines.length * spacing.line) + spacing.section;
+        cursorY += (answerLines.length * spacing.line) + spacing.paragraph;
         
         if (cursorY > height - margin) {
           doc.addPage();
@@ -307,11 +307,11 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
 
     conditions.forEach((condition, index) => {
       const descriptionLines = doc.splitTextToSize(condition.description || '', width - margin * 2 - 40);
-      const boxHeight = Math.max(40, descriptionLines.length * spacing.line + 20);
+      const boxHeight = Math.max(35, descriptionLines.length * spacing.line + 15);
       
       // Condition box
       doc.setFillColor(colors.background);
-      doc.roundedRect(margin, cursorY - 10, width - margin * 2, boxHeight, 3, 3, 'F');
+      doc.roundedRect(margin, cursorY - 8, width - margin * 2, boxHeight, 3, 3, 'F');
       
       // Condition name
       doc.setTextColor(colors.primary);
@@ -330,7 +330,7 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
       // Description
       if (condition.description) {
         doc.text(descriptionLines, margin + 30, cursorY);
-        cursorY += (descriptionLines.length * spacing.line) + spacing.section;
+        cursorY += (descriptionLines.length * spacing.line) + spacing.paragraph;
       }
 
       if (cursorY > height - margin) {
