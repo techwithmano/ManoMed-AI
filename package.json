@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@sendgrid/mail": "8.1.5",
     "@clerk/nextjs": "^6.15.0",
     "@clerk/themes": "^2.2.32",
     "@genkit-ai/googleai": "^1.0.4",

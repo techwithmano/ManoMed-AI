@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
-import sgMail from '@sendgrid/mail';
+import * as SendGrid from '@sendgrid/mail';
 
 // Initialize SendGrid with API key
-sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
+SendGrid.setApiKey(process.env.SENDGRID_API_KEY!);
 
 export async function POST(request: Request) {
   try {
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     };
 
     // Send email
-    await sgMail.send(msg);
+    await SendGrid.send(msg);
 
     return NextResponse.json({ success: true, message: 'Report sent successfully' });
   } catch (error) {
