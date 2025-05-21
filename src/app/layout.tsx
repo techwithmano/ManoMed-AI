@@ -9,6 +9,7 @@ import { Inter } from 'next/font/google';
 import Link from 'next/link';
 import { ClerkProvider } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
+import { Analytics } from '@vercel/analytics/next';
 import {
   FaHeartbeat,
   FaBars,
@@ -139,6 +140,7 @@ export default function RootLayout({
             </footer>
 
             <Toaster />
+            <Analytics />
           </ThemeProvider>
         </body>
       </html>
