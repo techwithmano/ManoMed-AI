@@ -47,6 +47,7 @@ function QuestionnaireContent() {
       setCurrentQuestionIndex(prev => prev + 1);
     } else {
       const answersString = encodeURIComponent(JSON.stringify(answers));
+      const questionsString = encodeURIComponent(JSON.stringify(questions));
       const queryParams = new URLSearchParams({
         name,
         age,
@@ -54,7 +55,8 @@ function QuestionnaireContent() {
         email,
         symptoms,
         medicalHistory,
-        answers: answersString
+        answers: answersString,
+        questions: questionsString
       });
       router.push(`/conditions?${queryParams.toString()}`);
     }
