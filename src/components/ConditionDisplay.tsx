@@ -55,7 +55,7 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
     }
   };
 
-  const generatePDF = () => {
+  const generatePDF = async () => {
     // Add debugging logs at start of PDF generation
     console.log('Starting PDF generation with Q&A data:', {
       questionsLength: questions?.length,
@@ -156,7 +156,7 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
     cursorY += spacing.section;
     
     const toc = [
-      { title: 'Patient Information', page: 2 },
+      { title: 'Patient Information', page: 3 },
       { title: 'Symptoms & History', page: 3 },
       { title: 'Q&A Session', page: 4 },
       { title: 'Analysis Results', page: 5 },
@@ -396,7 +396,38 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
       footer(i, pages);
     }
 
-    doc.save(`ManoMed-AI-Report-${name}-${new Date().toISOString().split('T')[0]}.pdf`);
+    // Save the PDF
+    const pdfOutput = doc.output('datauristring');
+    const pdfData = pdfOutput.split(',')[1]; // Get the base64 data
+
+    try {
+      // Send PDF to email API
+      const response = await fetch('/api/send-report', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          pdfData,
+          patientName: name
+        }),
+      });
+
+      const result = await response.json();
+      
+      if (result.success) {
+        // Save PDF locally as well
+        doc.save(`ManoMed-AI-Report-${name}-${new Date().toISOString().split('T')[0]}.pdf`);
+      } else {
+        console.error('Failed to send report:', result.message);
+        // Still save PDF locally even if email fails
+        doc.save(`ManoMed-AI-Report-${name}-${new Date().toISOString().split('T')[0]}.pdf`);
+      }
+    } catch (error) {
+      console.error('Error sending report:', error);
+      // Save PDF locally if there's an error
+      doc.save(`ManoMed-AI-Report-${name}-${new Date().toISOString().split('T')[0]}.pdf`);
+    }
   };
 
   return (
