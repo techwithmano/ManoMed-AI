@@ -178,13 +178,13 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
         // Question
         doc.setTextColor('#2980b9');
         doc.setFontSize(12);
-        doc.setFont(undefined, 'bold');
+        doc.setFont('helvetica', 'bold');
         doc.text(`Q${index + 1}: ${question}`, margin, cursorY);
         cursorY += 20;
         
         // Answer
         doc.setTextColor('#2c3e50');
-        doc.setFont(undefined, 'normal');
+        doc.setFont('helvetica', 'normal');
         const answerLines = doc.splitTextToSize(answer, width - margin * 2);
         doc.text(answerLines, margin + 20, cursorY);
         cursorY += (answerLines.length * 15) + 20; // Add space between Q&A pairs
@@ -207,19 +207,35 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
     doc.setFontSize(16).setTextColor('#16a085');
     doc.text('4. Analysis Results', margin, cursorY);
     cursorY += 25;
-    const resultRows = conditions.map((c, idx) => [
-      `${idx+1}`,
-      c.condition,
-      (c.likelihood * 100).toFixed(2) + '%',
-      c.description || 'No description.'
-    ]);
-    autoTable(doc, {
-      startY: cursorY,
-      margin: { left: margin, right: margin },
-      head: [['#', 'Condition', 'Likelihood', 'Description']],
-      body: resultRows,
-      styles: { cellPadding: 4, fontSize: 10 },
-      headStyles: { fillColor: '#2980b9', textColor: 255 }
+    doc.setFontSize(12).setTextColor('#2c3e50');
+
+    // Format each condition like Q&A
+    conditions.forEach((condition, index) => {
+      // Condition name
+      doc.setTextColor('#2980b9');
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Condition ${index + 1}: ${condition.condition}`, margin, cursorY);
+      cursorY += 20;
+
+      // Likelihood
+      doc.setTextColor('#2c3e50');
+      doc.setFont('helvetica', 'normal');
+      const likelihoodText = `Likelihood: ${(condition.likelihood * 100).toFixed(2)}%`;
+      doc.text(likelihoodText, margin + 20, cursorY);
+      cursorY += 20;
+
+      // Description
+      if (condition.description) {
+        const descriptionLines = doc.splitTextToSize(condition.description, width - margin * 2 - 40);
+        doc.text(descriptionLines, margin + 20, cursorY);
+        cursorY += (descriptionLines.length * 15) + 20;
+      }
+
+      // Add page break if needed
+      if (cursorY > height - margin) {
+        doc.addPage();
+        cursorY = margin;
+      }
     });
 
     // Disclaimer ---
