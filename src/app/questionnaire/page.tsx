@@ -46,7 +46,22 @@ function QuestionnaireContent() {
     if (currentQuestionIndex < (questions?.length || 0) - 1) {
       setCurrentQuestionIndex(prev => prev + 1);
     } else {
+      // Ensure we have valid questions and answers before proceeding
+      if (!questions || questions.length === 0) {
+        console.error('No questions available');
+        return;
+      }
+
+      // Add detailed debugging logs
+      console.log('Questionnaire - Questions before encoding:', questions);
+      console.log('Questionnaire - Answers before encoding:', answers);
+      
       const answersString = encodeURIComponent(JSON.stringify(answers));
+      const questionsString = encodeURIComponent(JSON.stringify(questions));
+      
+      console.log('Questionnaire - Encoded questions:', questionsString);
+      console.log('Questionnaire - Encoded answers:', answersString);
+      
       const queryParams = new URLSearchParams({
         name,
         age,
@@ -54,9 +69,14 @@ function QuestionnaireContent() {
         email,
         symptoms,
         medicalHistory,
-        answers: answersString
+        answers: answersString,
+        questions: questionsString
       });
-      router.push(`/conditions?${queryParams.toString()}`);
+      
+      const finalUrl = `/conditions?${queryParams.toString()}`;
+      console.log('Questionnaire - Final URL:', finalUrl);
+      
+      router.push(finalUrl);
     }
   };
 

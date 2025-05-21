@@ -37,6 +37,14 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
   questions,
   answers,
 }) => {
+  // Add debugging logs
+  console.log('ConditionDisplay received Q&A data:', {
+    questionsLength: questions?.length,
+    answersLength: answers?.length,
+    questions,
+    answers
+  });
+
   const getIcon = (likelihood: number) => {
     if (likelihood > 0.75) {
       return <CheckCircle className="w-4 h-4 text-green-500 mr-1" />;
@@ -48,6 +56,14 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
   };
 
   const generatePDF = () => {
+    // Add debugging logs at start of PDF generation
+    console.log('Starting PDF generation with Q&A data:', {
+      questionsLength: questions?.length,
+      answersLength: answers?.length,
+      questions,
+      answers
+    });
+
     const doc = new jsPDF("portrait", "pt", "a4");
     const width = doc.internal.pageSize.getWidth();
     const height = doc.internal.pageSize.getHeight();
@@ -57,129 +73,237 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
     // --- Header / Footer setup ---
     const footer = (page: number, totalPages: number) => {
       doc.setFontSize(10);
-      const footerText = `Page ${page} of ${totalPages}`;
+      const footerText = `Page ${page} of ${totalPages} | ManoMed AI Report | Generated: ${new Date().toLocaleString()}`;
       doc.text(footerText, width / 2, height - 20, { align: 'center' });
     };
 
     // Cover Page ---
     doc.setFillColor('#f0f4f8');
     doc.rect(0, 0, width, height, 'F');
-    doc.setFontSize(30);
+    
+    // Add logo or icon
+    doc.setFontSize(40);
+    doc.setTextColor('#2980b9');
+    doc.text('ManoMed AI', width/2, height/2 - 60, { align: 'center' });
+    
+    doc.setFontSize(24);
     doc.setTextColor('#2c3e50');
-    doc.text('ManoMed AI', width/2, height/2 - 40, { align: 'center' });
+    doc.text('Comprehensive Medical Analysis Report', width/2, height/2 - 20, { align: 'center' });
+    
     doc.setFontSize(16);
-    doc.text('Comprehensive Medical Analysis Report', width/2, height/2, { align: 'center' });
-    doc.setFontSize(12);
-    doc.text(`Generated: ${new Date().toLocaleString()}`, width/2, height/2 + 30, { align: 'center' });
+    doc.text(`Patient: ${name}`, width/2, height/2 + 20, { align: 'center' });
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, width/2, height/2 + 50, { align: 'center' });
+    
+    // Add a decorative line
+    doc.setDrawColor('#2980b9');
+    doc.setLineWidth(2);
+    doc.line(margin, height/2 + 80, width - margin, height/2 + 80);
+    
     doc.addPage();
 
     // Table of Contents ---
-    doc.setFontSize(18).setTextColor('#34495e');
+    doc.setFontSize(24).setTextColor('#34495e');
     doc.text('Table of Contents', margin, cursorY);
-    cursorY += 30;
+    cursorY += 40;
+    
     const toc = [
-      '1. Patient Information',
-      '2. Symptoms & History',
-      '3. Q&A Session',
-      '4. Analysis Results',
-      '5. Disclaimer',
+      { title: 'Patient Information', page: 3 },
+      { title: 'Symptoms & History', page: 4 },
+      { title: 'Q&A Session', page: 5 },
+      { title: 'Analysis Results', page: 6 },
+      { title: 'Recommendations', page: 7 },
+      { title: 'Disclaimer', page: 8 },
     ];
+    
     doc.setFontSize(12).setTextColor('#2c3e50');
     toc.forEach((item, idx) => {
-      doc.text(`${idx+1}. ${item}`, margin + 10, cursorY);
-      cursorY += 20;
+      const dots = '.'.repeat(50);
+      const text = `${idx + 1}. ${item.title} ${dots} ${item.page}`;
+      doc.text(text, margin, cursorY);
+      cursorY += 25;
     });
     doc.addPage();
     cursorY = margin;
 
     // Patient Information ---
-    doc.setFontSize(16).setTextColor('#16a085');
+    doc.setFontSize(20).setTextColor('#16a085');
     doc.text('1. Patient Information', margin, cursorY);
-    cursorY += 25;
-    doc.setFontSize(12).setTextColor('#2c3e50');
+    cursorY += 30;
+    
     const info = [
       ['Name', name],
       ['Age', age],
       ['Gender', gender],
       ['Email', email],
+      ['Report Date', new Date().toLocaleDateString()],
     ];
+    
     autoTable(doc, {
       startY: cursorY,
       margin: { left: margin, right: margin },
       theme: 'grid',
-      head: [['Field', 'Detail']],
       body: info,
-      styles: { cellPadding: 4, fontSize: 12 },
-      headStyles: { fillColor: '#16a085', textColor: 255 },
+      styles: { 
+        cellPadding: 6, 
+        fontSize: 12, 
+        textColor: '#2c3e50',
+        lineColor: '#e0e0e0',
+        lineWidth: 0.5
+      },
+      columnStyles: { 
+        0: { fontStyle: 'bold', cellWidth: 150, textColor: '#2980b9' }, 
+        1: { cellWidth: width - margin*2 - 150 } 
+      }
     });
     cursorY = (doc as any).lastAutoTable.finalY + 30;
 
     // Symptoms & Medical History ---
-    doc.setFontSize(16).setTextColor('#16a085');
+    doc.setFontSize(20).setTextColor('#16a085');
     doc.text('2. Symptoms & History', margin, cursorY);
-    cursorY += 25;
-    doc.setFontSize(12).setTextColor('#2c3e50');
+    cursorY += 30;
+    
     autoTable(doc, {
       startY: cursorY,
       margin: { left: margin, right: margin },
-      theme: 'plain',
+      theme: 'grid',
       body: [
         ['Reported Symptoms', symptoms],
         ['Medical History', medicalHistory || 'None provided'],
       ],
-      styles: { cellPadding: 4, fontSize: 12, textColor: '#2c3e50' },
-      columnStyles: { 0: { fontStyle: 'bold', cellWidth: 150 }, 1: { cellWidth: width - margin*2 - 150 } }
+      styles: { 
+        cellPadding: 6, 
+        fontSize: 12, 
+        textColor: '#2c3e50',
+        lineColor: '#e0e0e0',
+        lineWidth: 0.5
+      },
+      columnStyles: { 
+        0: { fontStyle: 'bold', cellWidth: 150, textColor: '#2980b9' }, 
+        1: { cellWidth: width - margin*2 - 150 } 
+      }
     });
     cursorY = (doc as any).lastAutoTable.finalY + 30;
 
     // Q&A Session ---
     doc.addPage();
     cursorY = margin;
-    doc.setFontSize(16).setTextColor('#16a085');
+    doc.setFontSize(20).setTextColor('#16a085');
     doc.text('3. Q&A Session', margin, cursorY);
-    cursorY += 25;
-    doc.setFontSize(12).setTextColor('#2c3e50');
-    const qaBody = questions.map((q, i) => [`Q${i+1}: ${q}`, `A${i+1}: ${answers[i]}`]);
-    autoTable(doc, {
-      startY: cursorY,
-      margin: { left: margin, right: margin },
-      head: [],
-      body: qaBody,
-      styles: { cellPadding: 4, fontSize: 12 },
-      alternateRowStyles: { fillColor: '#ecf0f1' }
-    });
-    cursorY = (doc as any).lastAutoTable.finalY + 30;
+    cursorY += 30;
+
+    if (Array.isArray(questions) && Array.isArray(answers) && questions.length > 0 && answers.length > 0) {
+      questions.forEach((question, index) => {
+        const answer = answers[index] || 'No answer provided';
+        
+        // Question box
+        doc.setFillColor('#f8f9fa');
+        doc.roundedRect(margin, cursorY - 10, width - margin * 2, 30, 3, 3, 'F');
+        
+        // Question
+        doc.setTextColor('#2980b9');
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        const questionLines = doc.splitTextToSize(`Q${index + 1}: ${question}`, width - margin * 2 - 20);
+        doc.text(questionLines, margin + 10, cursorY + 5);
+        cursorY += (questionLines.length * 15) + 20;
+        
+        // Answer
+        doc.setTextColor('#2c3e50');
+        doc.setFont('helvetica', 'normal');
+        const answerLines = doc.splitTextToSize(answer, width - margin * 2 - 40);
+        doc.text(answerLines, margin + 30, cursorY);
+        cursorY += (answerLines.length * 15) + 30;
+        
+        if (cursorY > height - margin) {
+          doc.addPage();
+          cursorY = margin;
+        }
+      });
+    } else {
+      doc.setTextColor('#666');
+      doc.text('No Q&A session data available', margin, cursorY);
+      cursorY += 30;
+    }
 
     // Analysis Results ---
     doc.addPage();
     cursorY = margin;
-    doc.setFontSize(16).setTextColor('#16a085');
+    doc.setFontSize(20).setTextColor('#16a085');
     doc.text('4. Analysis Results', margin, cursorY);
-    cursorY += 25;
-    const resultRows = conditions.map((c, idx) => [
-      `${idx+1}`,
-      c.condition,
-      (c.likelihood * 100).toFixed(2) + '%',
-      c.description || 'No description.'
-    ]);
-    autoTable(doc, {
-      startY: cursorY,
-      margin: { left: margin, right: margin },
-      head: [['#', 'Condition', 'Likelihood', 'Description']],
-      body: resultRows,
-      styles: { cellPadding: 4, fontSize: 10 },
-      headStyles: { fillColor: '#2980b9', textColor: 255 }
+    cursorY += 30;
+
+    conditions.forEach((condition, index) => {
+      // Condition box
+      doc.setFillColor('#f8f9fa');
+      doc.roundedRect(margin, cursorY - 10, width - margin * 2, 40, 3, 3, 'F');
+      
+      // Condition name
+      doc.setTextColor('#2980b9');
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Condition ${index + 1}: ${condition.condition}`, margin + 10, cursorY + 5);
+      cursorY += 25;
+
+      // Likelihood
+      doc.setTextColor('#2c3e50');
+      doc.setFont('helvetica', 'normal');
+      const likelihoodText = `Likelihood: ${(condition.likelihood * 100).toFixed(2)}%`;
+      doc.text(likelihoodText, margin + 30, cursorY);
+      cursorY += 20;
+
+      // Description
+      if (condition.description) {
+        const descriptionLines = doc.splitTextToSize(condition.description, width - margin * 2 - 40);
+        doc.text(descriptionLines, margin + 30, cursorY);
+        cursorY += (descriptionLines.length * 15) + 30;
+      }
+
+      if (cursorY > height - margin) {
+        doc.addPage();
+        cursorY = margin;
+      }
+    });
+
+    // Recommendations ---
+    doc.addPage();
+    cursorY = margin;
+    doc.setFontSize(20).setTextColor('#16a085');
+    doc.text('5. Recommendations', margin, cursorY);
+    cursorY += 30;
+    
+    const recommendations = [
+      'Consult with a healthcare provider for professional medical advice',
+      'Keep track of any changes in symptoms',
+      'Follow up with recommended specialists if needed',
+      'Maintain a record of medications and treatments',
+      'Schedule regular check-ups as advised'
+    ];
+    
+    recommendations.forEach((rec, index) => {
+      doc.setFontSize(12);
+      doc.text(`• ${rec}`, margin + 20, cursorY);
+      cursorY += 20;
     });
 
     // Disclaimer ---
     doc.addPage();
     cursorY = margin;
-    doc.setFontSize(14).setTextColor('#c0392b');
-    doc.text('5. Disclaimer', margin, cursorY);
-    cursorY += 20;
-    doc.setFontSize(10).setTextColor('#2c3e50');
-    const disclaimer = `This report is generated by ManoMed AI and is not a substitute for professional medical advice. Always consult a qualified healthcare provider.`;
-    doc.text(doc.splitTextToSize(disclaimer, width - margin*2), margin, cursorY);
+    doc.setFontSize(20).setTextColor('#c0392b');
+    doc.text('6. Disclaimer', margin, cursorY);
+    cursorY += 30;
+    
+    doc.setFontSize(12).setTextColor('#2c3e50');
+    const disclaimer = [
+      'This report is generated by ManoMed AI and is not a substitute for professional medical advice.',
+      'Always consult a qualified healthcare provider for proper diagnosis and treatment.',
+      'The information provided in this report is based on the symptoms and information provided by the patient.',
+      'ManoMed AI is not responsible for any decisions made based on this report.'
+    ];
+    
+    disclaimer.forEach((text, index) => {
+      const lines = doc.splitTextToSize(text, width - margin * 2);
+      doc.text(lines, margin, cursorY);
+      cursorY += (lines.length * 15) + 10;
+    });
 
     // Add page numbers to all pages
     const pages = doc.getNumberOfPages();
@@ -188,7 +312,7 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
       footer(i, pages);
     }
 
-    doc.save("manomed-ai-report.pdf");
+    doc.save(`ManoMed-AI-Report-${name}-${new Date().toISOString().split('T')[0]}.pdf`);
   };
 
   return (
