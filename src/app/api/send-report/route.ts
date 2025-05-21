@@ -7,21 +7,55 @@ SendGrid.setApiKey(process.env.SENDGRID_API_KEY!);
 export async function POST(request: Request) {
   try {
     console.log('Starting email send process...');
-    const { pdfData, patientName } = await request.json();
-    console.log('Received request for patient:', patientName);
+    
+    // Parse request body
+    const body = await request.json();
+    console.log('Request body received:', { 
+      hasPdfData: !!body.pdfData,
+      patientName: body.patientName,
+      pdfDataLength: body.pdfData?.length
+    });
+
+    const { pdfData, patientName } = body;
+
+    // Validate required fields
+    if (!pdfData) {
+      console.error('PDF data is missing');
+      return NextResponse.json(
+        { success: false, message: 'PDF data is required' },
+        { status: 400 }
+      );
+    }
+
+    if (!patientName) {
+      console.error('Patient name is missing');
+      return NextResponse.json(
+        { success: false, message: 'Patient name is required' },
+        { status: 400 }
+      );
+    }
 
     // Verify environment variables
     if (!process.env.SENDGRID_API_KEY) {
       console.error('SENDGRID_API_KEY is not set');
-      throw new Error('SENDGRID_API_KEY is not configured');
+      return NextResponse.json(
+        { success: false, message: 'Email service is not configured' },
+        { status: 500 }
+      );
     }
     if (!process.env.RECIPIENT_EMAIL) {
       console.error('RECIPIENT_EMAIL is not set');
-      throw new Error('RECIPIENT_EMAIL is not configured');
+      return NextResponse.json(
+        { success: false, message: 'Recipient email is not configured' },
+        { status: 500 }
+      );
     }
     if (!process.env.SENDER_EMAIL) {
       console.error('SENDER_EMAIL is not set');
-      throw new Error('SENDER_EMAIL is not configured');
+      return NextResponse.json(
+        { success: false, message: 'Sender email is not configured' },
+        { status: 500 }
+      );
     }
 
     // Create email message
@@ -56,8 +90,19 @@ export async function POST(request: Request) {
       console.error('Error message:', error.message);
       console.error('Error stack:', error.stack);
     }
+    
+    // Return a more detailed error response
     return NextResponse.json(
-      { success: false, message: 'Failed to send report', error: error instanceof Error ? error.message : 'Unknown error' },
+      { 
+        success: false, 
+        message: 'Failed to send report',
+        error: error instanceof Error ? error.message : 'Unknown error',
+        details: error instanceof Error ? {
+          name: error.name,
+          message: error.message,
+          stack: error.stack
+        } : null
+      },
       { status: 500 }
     );
   }
