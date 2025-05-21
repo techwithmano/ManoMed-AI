@@ -24,20 +24,39 @@ function ConditionsContent() {
   const [conditions, setConditions] = useState<SymptomAnalysisOutput | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [parsedQuestions, setParsedQuestions] = useState<string[]>([]);
+  const [parsedAnswers, setParsedAnswers] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchConditions = async () => {
       try {
-        // Decode and parse answers and questions
-        const decodedAnswers = decodeURIComponent(answersRaw);
-        const decodedQuestions = decodeURIComponent(questionsRaw);
-        const parsedAnswers: string[] = JSON.parse(decodedAnswers);
-        const parsedQuestions: string[] = JSON.parse(decodedQuestions);
+        // Safely parse questions and answers
+        let questions: string[] = [];
+        let answers: string[] = [];
+        
+        try {
+          const decodedQuestions = decodeURIComponent(questionsRaw);
+          const decodedAnswers = decodeURIComponent(answersRaw);
+          questions = JSON.parse(decodedQuestions);
+          answers = JSON.parse(decodedAnswers);
+          
+          // Validate arrays
+          if (!Array.isArray(questions) || !Array.isArray(answers)) {
+            throw new Error('Invalid questions or answers format');
+          }
+          
+          setParsedQuestions(questions);
+          setParsedAnswers(answers);
+        } catch (parseError) {
+          console.error('Error parsing questions/answers:', parseError);
+          setParsedQuestions([]);
+          setParsedAnswers([]);
+        }
 
         const result = await symptomAnalysis({
           symptoms,
           medicalHistory,
-          questionnaireAnswers: parsedAnswers.join(','),
+          questionnaireAnswers: answers.join(','),
         });
 
         setConditions(result);
@@ -119,8 +138,8 @@ function ConditionsContent() {
             email={email}
             symptoms={symptoms}
             medicalHistory={medicalHistory}
-            questions={JSON.parse(decodeURIComponent(questionsRaw))}
-            answers={JSON.parse(decodeURIComponent(answersRaw))}
+            questions={parsedQuestions}
+            answers={parsedAnswers}
           />
           <div className="mt-6">
             <Disclaimer />

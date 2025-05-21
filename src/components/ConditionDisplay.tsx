@@ -54,6 +54,12 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
     const margin = 40;
     let cursorY = margin;
 
+    // Validate questions and answers
+    if (!Array.isArray(questions) || !Array.isArray(answers) || questions.length === 0 || answers.length === 0) {
+      console.warn('Questions or answers are missing or invalid');
+      // Continue with PDF generation but skip Q&A section
+    }
+
     // --- Header / Footer setup ---
     const footer = (page: number, totalPages: number) => {
       doc.setFontSize(10);
@@ -139,16 +145,32 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
     doc.text('3. Q&A Session', margin, cursorY);
     cursorY += 25;
     doc.setFontSize(12).setTextColor('#2c3e50');
-    const qaBody = questions.map((q, i) => [`Q${i+1}: ${q}`, `A${i+1}: ${answers[i]}`]);
-    autoTable(doc, {
-      startY: cursorY,
-      margin: { left: margin, right: margin },
-      head: [],
-      body: qaBody,
-      styles: { cellPadding: 4, fontSize: 12 },
-      alternateRowStyles: { fillColor: '#ecf0f1' }
-    });
-    cursorY = (doc as any).lastAutoTable.finalY + 30;
+
+    // Only add Q&A table if we have valid data
+    if (Array.isArray(questions) && Array.isArray(answers) && questions.length > 0 && answers.length > 0) {
+      const qaBody = questions.map((q, i) => {
+        const question = q || 'No question provided';
+        const answer = answers[i] || 'No answer provided';
+        return [`Q${i+1}: ${question}`, `A${i+1}: ${answer}`];
+      });
+
+      autoTable(doc, {
+        startY: cursorY,
+        margin: { left: margin, right: margin },
+        head: [],
+        body: qaBody,
+        styles: { cellPadding: 4, fontSize: 12 },
+        alternateRowStyles: { fillColor: '#ecf0f1' },
+        columnStyles: {
+          0: { cellWidth: width * 0.4 },
+          1: { cellWidth: width * 0.4 }
+        }
+      });
+    } else {
+      // Add a message if no Q&A data is available
+      doc.text('No Q&A session data available', margin, cursorY);
+    }
+    cursorY = (doc as any).lastAutoTable?.finalY + 30 || cursorY + 30;
 
     // Analysis Results ---
     doc.addPage();
