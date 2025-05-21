@@ -128,11 +128,13 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
     autoTable(doc, {
       startY: cursorY,
       margin: { left: margin, right: margin },
-      theme: 'grid',
-      head: [['Field', 'Detail']],
+      theme: 'plain',
       body: info,
-      styles: { cellPadding: 4, fontSize: 12 },
-      headStyles: { fillColor: '#16a085', textColor: 255 },
+      styles: { cellPadding: 4, fontSize: 12, textColor: '#2c3e50' },
+      columnStyles: { 
+        0: { fontStyle: 'bold', cellWidth: 150, textColor: '#2980b9' }, 
+        1: { cellWidth: width - margin*2 - 150 } 
+      }
     });
     cursorY = (doc as any).lastAutoTable.finalY + 30;
 
@@ -150,7 +152,10 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
         ['Medical History', medicalHistory || 'None provided'],
       ],
       styles: { cellPadding: 4, fontSize: 12, textColor: '#2c3e50' },
-      columnStyles: { 0: { fontStyle: 'bold', cellWidth: 150 }, 1: { cellWidth: width - margin*2 - 150 } }
+      columnStyles: { 
+        0: { fontStyle: 'bold', cellWidth: 150, textColor: '#2980b9' }, 
+        1: { cellWidth: width - margin*2 - 150 } 
+      }
     });
     cursorY = (doc as any).lastAutoTable.finalY + 30;
 
@@ -162,30 +167,34 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
     cursorY += 25;
     doc.setFontSize(12).setTextColor('#2c3e50');
 
-    // Only add Q&A table if we have valid data
+    // Only add Q&A if we have valid data
     if (Array.isArray(questions) && Array.isArray(answers) && questions.length > 0 && answers.length > 0) {
       // Log the data for debugging
       console.log('Generating Q&A section with:', { questions, answers });
       
-      const qaBody = questions.map((q, i) => {
-        const question = q || 'No question provided';
-        const answer = answers[i] || 'No answer provided';
-        return [`Q${i+1}: ${question}`, `A${i+1}: ${answer}`];
-      });
-
-      autoTable(doc, {
-        startY: cursorY,
-        margin: { left: margin, right: margin },
-        head: [],
-        body: qaBody,
-        styles: { cellPadding: 4, fontSize: 12 },
-        alternateRowStyles: { fillColor: '#ecf0f1' },
-        columnStyles: {
-          0: { cellWidth: width * 0.4 },
-          1: { cellWidth: width * 0.4 }
+      questions.forEach((question, index) => {
+        const answer = answers[index] || 'No answer provided';
+        
+        // Question
+        doc.setTextColor('#2980b9');
+        doc.setFontSize(12);
+        doc.setFont(undefined, 'bold');
+        doc.text(`Q${index + 1}: ${question}`, margin, cursorY);
+        cursorY += 20;
+        
+        // Answer
+        doc.setTextColor('#2c3e50');
+        doc.setFont(undefined, 'normal');
+        const answerLines = doc.splitTextToSize(answer, width - margin * 2);
+        doc.text(answerLines, margin + 20, cursorY);
+        cursorY += (answerLines.length * 15) + 20; // Add space between Q&A pairs
+        
+        // Add page break if needed
+        if (cursorY > height - margin) {
+          doc.addPage();
+          cursorY = margin;
         }
       });
-      cursorY = (doc as any).lastAutoTable.finalY + 30;
     } else {
       console.warn('Q&A data is missing or invalid:', { questions, answers });
       doc.text('No Q&A session data available', margin, cursorY);
