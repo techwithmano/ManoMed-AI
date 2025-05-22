@@ -2,7 +2,11 @@ import { NextResponse } from 'next/server';
 import * as SendGrid from '@sendgrid/mail';
 
 // Initialize SendGrid with API key
-SendGrid.setApiKey(process.env.SENDGRID_API_KEY!);
+if (!process.env.SENDGRID_API_KEY) {
+  console.error('SENDGRID_API_KEY is not set in environment variables');
+} else {
+  SendGrid.setApiKey(process.env.SENDGRID_API_KEY);
+}
 
 export async function POST(request: Request) {
   try {
@@ -39,7 +43,7 @@ export async function POST(request: Request) {
     if (!process.env.SENDGRID_API_KEY) {
       console.error('SENDGRID_API_KEY is not set');
       return NextResponse.json(
-        { success: false, message: 'Email service is not configured' },
+        { success: false, message: 'Email service is not configured (missing API key)' },
         { status: 500 }
       );
     }
@@ -84,11 +88,46 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true, message: 'Report sent successfully' });
   } catch (error) {
     console.error('Error sending email:', error);
-    // Log more details about the error
+    
+    // Handle SendGrid specific errors
     if (error instanceof Error) {
       console.error('Error name:', error.name);
       console.error('Error message:', error.message);
       console.error('Error stack:', error.stack);
+
+      // Check for authentication errors
+      if (error.message.includes('Forbidden') || error.message.includes('Unauthorized')) {
+        return NextResponse.json(
+          { 
+            success: false, 
+            message: 'Email service authentication failed',
+            error: 'Authentication Error',
+            details: {
+              name: error.name,
+              message: error.message,
+              hint: 'Please check your SendGrid API key and sender verification'
+            }
+          },
+          { status: 401 }
+        );
+      }
+
+      // Check for sender verification errors
+      if (error.message.includes('sender')) {
+        return NextResponse.json(
+          { 
+            success: false, 
+            message: 'Sender email not verified',
+            error: 'Sender Verification Error',
+            details: {
+              name: error.name,
+              message: error.message,
+              hint: 'Please verify your sender email in SendGrid'
+            }
+          },
+          { status: 400 }
+        );
+      }
     }
     
     // Return a more detailed error response
