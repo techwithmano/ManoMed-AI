@@ -1,12 +1,8 @@
 import { NextResponse } from 'next/server';
-import * as SendGrid from '@sendgrid/mail';
+import { Resend } from 'resend';
 
-// Initialize SendGrid with API key
-if (!process.env.SENDGRID_API_KEY) {
-  console.error('SENDGRID_API_KEY is not set in environment variables');
-} else {
-  SendGrid.setApiKey(process.env.SENDGRID_API_KEY);
-}
+// Initialize Resend
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
@@ -40,21 +36,10 @@ export async function POST(request: Request) {
     }
 
     // Verify environment variables
-    if (!process.env.SENDGRID_API_KEY) {
-      console.error('SENDGRID_API_KEY is not set');
-      return NextResponse.json(
-        { success: false, message: 'Email service is not configured (missing API key)' },
-        { status: 500 }
-      );
-    }
-    if (!process.env.RECIPIENT_EMAIL) {
-      console.error('RECIPIENT_EMAIL is not set');
-      return NextResponse.json(
-        { success: false, message: 'Recipient email is not configured' },
-        { status: 500 }
-      );
-    }
-    if (!process.env.SENDER_EMAIL) {
+    const senderEmail = process.env.SENDER_EMAIL;
+    const recipientEmail = process.env.RECIPIENT_EMAIL;
+
+    if (!senderEmail) {
       console.error('SENDER_EMAIL is not set');
       return NextResponse.json(
         { success: false, message: 'Sender email is not configured' },
@@ -62,75 +47,45 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!recipientEmail) {
+      console.error('RECIPIENT_EMAIL is not set');
+      return NextResponse.json(
+        { success: false, message: 'Recipient email is not configured' },
+        { status: 500 }
+      );
+    }
+
     // Create email message
-    const msg = {
-      to: process.env.RECIPIENT_EMAIL,
-      from: process.env.SENDER_EMAIL,
+    const { data, error } = await resend.emails.send({
+      from: senderEmail,
+      to: recipientEmail,
       subject: `ManoMed AI Report - ${patientName}`,
       text: `A new medical report has been generated for ${patientName}.`,
       attachments: [
         {
-          content: pdfData,
           filename: `ManoMed-AI-Report-${patientName}-${new Date().toISOString().split('T')[0]}.pdf`,
-          type: 'application/pdf',
-          disposition: 'attachment'
+          content: Buffer.from(pdfData, 'base64')
         }
       ]
-    };
+    });
 
-    console.log('Attempting to send email to:', process.env.RECIPIENT_EMAIL);
-    console.log('From email:', process.env.SENDER_EMAIL);
+    if (error) {
+      console.error('Resend error:', error);
+      return NextResponse.json(
+        { 
+          success: false, 
+          message: 'Failed to send email',
+          error: error.message
+        },
+        { status: 500 }
+      );
+    }
 
-    // Send email
-    const response = await SendGrid.send(msg);
-    console.log('SendGrid response:', response);
-
+    console.log('Email sent successfully:', data);
     return NextResponse.json({ success: true, message: 'Report sent successfully' });
   } catch (error) {
     console.error('Error sending email:', error);
     
-    // Handle SendGrid specific errors
-    if (error instanceof Error) {
-      console.error('Error name:', error.name);
-      console.error('Error message:', error.message);
-      console.error('Error stack:', error.stack);
-
-      // Check for authentication errors
-      if (error.message.includes('Forbidden') || error.message.includes('Unauthorized')) {
-        return NextResponse.json(
-          { 
-            success: false, 
-            message: 'Email service authentication failed',
-            error: 'Authentication Error',
-            details: {
-              name: error.name,
-              message: error.message,
-              hint: 'Please check your SendGrid API key and sender verification'
-            }
-          },
-          { status: 401 }
-        );
-      }
-
-      // Check for sender verification errors
-      if (error.message.includes('sender')) {
-        return NextResponse.json(
-          { 
-            success: false, 
-            message: 'Sender email not verified',
-            error: 'Sender Verification Error',
-            details: {
-              name: error.name,
-              message: error.message,
-              hint: 'Please verify your sender email in SendGrid'
-            }
-          },
-          { status: 400 }
-        );
-      }
-    }
-    
-    // Return a more detailed error response
     return NextResponse.json(
       { 
         success: false, 
