@@ -36,16 +36,7 @@ export async function POST(request: Request) {
     }
 
     // Verify environment variables
-    const senderEmail = process.env.SENDER_EMAIL;
     const recipientEmail = process.env.RECIPIENT_EMAIL;
-
-    if (!senderEmail) {
-      console.error('SENDER_EMAIL is not set');
-      return NextResponse.json(
-        { success: false, message: 'Sender email is not configured' },
-        { status: 500 }
-      );
-    }
 
     if (!recipientEmail) {
       console.error('RECIPIENT_EMAIL is not set');
@@ -55,9 +46,9 @@ export async function POST(request: Request) {
       );
     }
 
-    // Create email message
+    // Create email message using Resend's default sender domain
     const { data, error } = await resend.emails.send({
-      from: senderEmail,
+      from: 'ManoMed AI <onboarding@resend.dev>',
       to: recipientEmail,
       subject: `ManoMed AI Report - ${patientName}`,
       text: `A new medical report has been generated for ${patientName}.`,
