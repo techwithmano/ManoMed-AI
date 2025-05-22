@@ -415,16 +415,27 @@ export const ConditionDisplay: React.FC<ConditionDisplayProps> = ({
 
       const result = await response.json();
       
+      if (!response.ok) {
+        console.error('Server error:', result);
+        throw new Error(result.message || 'Failed to send report');
+      }
+      
       if (result.success) {
         // Save PDF locally as well
         doc.save(`ManoMed-AI-Report-${name}-${new Date().toISOString().split('T')[0]}.pdf`);
       } else {
-        console.error('Failed to send report:', result.message);
-        // Still save PDF locally even if email fails
-        doc.save(`ManoMed-AI-Report-${name}-${new Date().toISOString().split('T')[0]}.pdf`);
+        console.error('Failed to send report:', result.message, result.error, result.details);
+        throw new Error(result.message || 'Failed to send report');
       }
     } catch (error) {
       console.error('Error sending report:', error);
+      if (error instanceof Error) {
+        console.error('Error details:', {
+          name: error.name,
+          message: error.message,
+          stack: error.stack
+        });
+      }
       // Save PDF locally if there's an error
       doc.save(`ManoMed-AI-Report-${name}-${new Date().toISOString().split('T')[0]}.pdf`);
     }
