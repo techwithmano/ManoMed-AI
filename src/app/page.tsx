@@ -2,9 +2,7 @@
 
 import Link from 'next/link';
 import { FaHeartbeat } from 'react-icons/fa';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Loading from '@/components/Loading';
 
 const steps = [
   { icon: '🔍', title: 'Analyze Symptoms', desc: 'Enter symptoms and medical history to begin the analysis.' },
@@ -13,34 +11,7 @@ const steps = [
 ];
 
 const LandingPage = () => {
-  const [showForm, setShowForm] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    name: '',
-    age: '',
-    gender: ''
-  });
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    // Store the form data in localStorage
-    localStorage.setItem('userData', JSON.stringify(formData));
-    // Add a small delay to show the loading state
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    // Navigate to the analysis page
-    router.push('/ManoMedai');
-  };
-
-  if (isLoading) {
-    return (
-      <Loading
-        title="Processing Your Information"
-        description="Please wait while we prepare your personalized health analysis..."
-      />
-    );
-  }
 
   return (
     <div className="bg-background text-foreground flex flex-col">
@@ -54,77 +25,12 @@ const LandingPage = () => {
           ManoMed AI analyzes your symptoms and history with advanced models to deliver expert-level guidance—anytime, anywhere.
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
-          {!showForm ? (
-            <button
-              onClick={() => setShowForm(true)}
-              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full text-lg font-medium shadow hover:opacity-90 transition"
-            >
-              Start Analysis
-            </button>
-          ) : (
-            <form onSubmit={handleSubmit} className="w-full max-w-md bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-              <div className="mb-4">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="age" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Age
-                </label>
-                <input
-                  type="number"
-                  id="age"
-                  value={formData.age}
-                  onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                  min="1"
-                  max="120"
-                />
-              </div>
-              <div className="mb-6">
-                <label htmlFor="gender" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Gender
-                </label>
-                <select
-                  id="gender"
-                  value={formData.gender}
-                  onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                >
-                  <option value="">Select gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              <div className="flex gap-4">
-                <button
-                  type="submit"
-                  className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-md hover:opacity-90 transition"
-                >
-                  Continue
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowForm(false)}
-                  className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          )}
+          <button
+            onClick={() => router.push('/ManoMedai')}
+            className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full text-lg font-medium shadow hover:opacity-90 transition"
+          >
+            Start Analysis
+          </button>
           <Link
             href="/about"
             className="px-6 py-3 border-2 border-gray-800 dark:border-gray-200 text-gray-800 dark:text-gray-200 rounded-full text-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-200 hover:text-white dark:hover:text-black transition"
