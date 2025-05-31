@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 export default function ComingSoon() {
-  const launchDate = new Date("2025-06-01T00:00:00Z").getTime();
+  const launchDate = new Date("2025-06-01T00:00:00+03:00").getTime();
 
   const [timeLeft, setTimeLeft] = useState(getTimeLeft());
 
