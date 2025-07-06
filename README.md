@@ -1,32 +1,12 @@
 # ManoMed AI - Medical Symptom Analysis Tool
 
-ManoMed AI is an AI-powered medical symptom analysis tool that helps users understand potential medical conditions based on their symptoms and medical history. This project was developed as part of a university course to demonstrate the integration of AI in healthcare applications.
+ManoMed AI is an AI-powered medical symptom analysis tool that helps users understand potential medical conditions based on their symptoms and medical history. This project was developed to demonstrate the integration of AI in healthcare applications.
  
-## Guide and testing 📼: 
- 
- https://youtu.be/rHkbJoBnmPk?si=lFO8nr5jbJWZbyQu
 
 ## Deployments:
  
  🔗 https://manomedai.com
  
-## Preview
-
-### Landing page 
-![Screenshot (589)](https://github.com/user-attachments/assets/262d3445-8097-4003-a325-3bef59417f2b)
-![Screenshot (582)](https://github.com/user-attachments/assets/3d396d8b-c05e-432d-8d7f-32bef332f32a)
-
-
-### Questionaire
-![Screenshot (583)](https://github.com/user-attachments/assets/c5b48f64-015b-4cec-bff2-db10c6df908e)
-![Screenshot (588)](https://github.com/user-attachments/assets/04261959-3fd0-4dc5-abab-726dd268981f)
-![Screenshot (587)](https://github.com/user-attachments/assets/5cf76c15-0541-4830-b7b6-1fa97aa94ef7)
-![Screenshot (584)](https://github.com/user-attachments/assets/02672aca-6309-4ca1-8295-bceeb6dfc6ae)
-
-### Analysis
-![Screenshot (585)](https://github.com/user-attachments/assets/067a5ce6-eca0-44d2-b27e-b653d4337138)
-![Screenshot (586)](https://github.com/user-attachments/assets/e97115ad-7e21-4087-b9ed-f61de1c983bf)
-
 ## Features
 
 - 🤖 AI-powered symptom analysis
