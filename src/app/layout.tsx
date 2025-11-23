@@ -1,149 +1,169 @@
-// src/app/layout.tsx (or wherever RootLayout lives)
-'use client';
+"use client";
 
-import './globals.css';
-import { Toaster } from '@/components/ui/toaster';
-import { ThemeProvider } from '@/components/theme-provider';
-import ThemeSwitcher from '@/components/ThemeSwitcher';
-import { Inter } from 'next/font/google';
-import Link from 'next/link';
-import { ClerkProvider } from '@clerk/nextjs';
-import { dark } from '@clerk/themes';
-import { Analytics } from '@vercel/analytics/next';
-import {
-  FaHeartbeat,
-  FaBars,
-  FaTimes,
-  FaHome,
-  FaInfoCircle,
-  FaEnvelope,
-  FaStethoscope,
-} from 'react-icons/fa';
-import { useState } from 'react';
+import { useEffect, useRef } from "react";
 
-// Toggle this flag to hide/show navigation
-const COMING_SOON_MODE = true;
+export default function UnderMaintenance() {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-const inter = Inter({ subsets: ['latin'] });
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-const navItems = [
-  { href: '/', icon: <FaHome />, label: 'Home' },
-  { href: '/about', icon: <FaInfoCircle />, label: 'About' },
-  { href: '/contact', icon: <FaEnvelope />, label: 'Contact' },
-];
+    const ctx = canvas.getContext("2d")!;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const particles: any[] = [];
 
-  const toggleMenu = () => setIsMenuOpen((s) => !s);
-  const closeMenu = () => setIsMenuOpen(false);
+    for (let i = 0; i < 50; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 3 + 1,
+        speedX: (Math.random() - 0.5) * 0.3,
+        speedY: (Math.random() - 0.5) * 0.3,
+      });
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach((p) => {
+        p.x += p.speedX;
+        p.y += p.speedY;
+
+        if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+
+        ctx.fillStyle = "rgba(0, 255, 255, 0.7)";
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  }, []);
 
   return (
-    <ClerkProvider appearance={{ baseTheme: dark }}>
-      <html lang="en" className="scroll-smooth">
-        <body className={`${inter.className} bg-background text-foreground`}>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <main
+      style={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background:
+          "linear-gradient(135deg, #000014, #001722, #002b36, #001722, #000014)",
+        color: "#fff",
+        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+        padding: "1rem",
+        textAlign: "center",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: "absolute",
+          width: "100%",
+          height: "100%",
+          opacity: 0.3,
+          top: 0,
+          left: 0,
+        }}
+      />
 
-            {/* Header (hidden in Coming Soon mode) */}
-            {!COMING_SOON_MODE && (
-              <header className="fixed top-0 w-full z-50 bg-white/80 dark:bg-black/80 backdrop-blur-md shadow-md">
-                <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
-                  <Link href="/" className="flex items-center space-x-2" aria-label="ManoMed AI Home">
-                    <FaHeartbeat className="text-blue-600 text-2xl" />
-                    <span className="text-2xl font-bold text-gray-900 dark:text-white">
-                      ManoMed AI
-                    </span>
-                  </Link>
+      <div
+        style={{
+          backdropFilter: "blur(12px)",
+          background: "rgba(255, 255, 255, 0.08)",
+          borderRadius: "20px",
+          padding: "2rem 3rem",
+          boxShadow: "0 0 25px rgba(0, 255, 255, 0.3)",
+          animation: "pulseGlow 3s infinite ease-in-out",
+          maxWidth: "420px",
+          border: "1px solid rgba(0, 255, 255, 0.2)",
+          position: "relative",
+          zIndex: 2,
+        }}
+      >
+        <div
+          style={{
+            fontSize: "3rem",
+            animation: "floatWrench 3s ease-in-out infinite",
+            marginBottom: "1rem",
+            display: "inline-block",
+          }}
+        >
+          🔧
+        </div>
 
-                  {/* Desktop Nav */}
-                  <nav className="hidden sm:flex items-center space-x-6">
-                    {navItems.map((item) => (
-                      <Link
-                        key={item.label}
-                        href={item.href}
-                        className="flex items-center space-x-1 text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition"
-                      >
-                        {item.icon}
-                        <span>{item.label}</span>
-                      </Link>
-                    ))}
-                    <Link
-                      href="/ManoMedai"
-                      className="ml-4 px-4 py-2 bg-blue-600 text-white rounded-full font-medium shadow hover:bg-blue-700 transition"
-                    >
-                      ManoMed-AI
-                    </Link>
-                    <ThemeSwitcher />
-                  </nav>
+        <h1
+          style={{
+            fontSize: "clamp(2rem, 8vw, 3.5rem)",
+            marginBottom: "1rem",
+            textShadow: "0 0 15px #00eaff",
+            fontWeight: "700",
+          }}
+        >
+          Under Maintenance
+        </h1>
 
-                  {/* Mobile Toggle */}
-                  <div className="sm:hidden flex items-center space-x-3">
-                    <ThemeSwitcher />
-                    <button
-                      aria-label="Toggle menu"
-                      onClick={toggleMenu}
-                      className="p-2 text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition"
-                    >
-                      {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
-                    </button>
-                  </div>
-                </div>
+        <div
+          style={{
+            border: "4px solid rgba(0, 255, 255, 0.4)",
+            borderTop: "4px solid transparent",
+            borderRadius: "50%",
+            width: "60px",
+            height: "60px",
+            margin: "1rem auto",
+            animation: "spinLoader 1.2s linear infinite",
+          }}
+        />
 
-                {/* Mobile Menu */}
-                {isMenuOpen && (
-                  <>
-                    <div
-                      className="fixed inset-0 bg-black/30 z-40"
-                      onClick={closeMenu}
-                      aria-hidden="true"
-                    />
-                    <div className="absolute top-full left-0 w-full bg-white dark:bg-black shadow-md animate-slideDown z-50">
-                      <div className="flex flex-col space-y-4 p-6">
-                        {navItems.map((item) => (
-                          <Link
-                            key={item.label}
-                            href={item.href}
-                            onClick={closeMenu}
-                            className="flex items-center space-x-3 text-gray-800 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 transition"
-                          >
-                            {item.icon}
-                            <span>{item.label}</span>
-                          </Link>
-                        ))}
-                        <Link
-                          href="/ManoMedai"
-                          onClick={closeMenu}
-                          className="flex items-center space-x-3 px-4 py-2 bg-blue-600 text-white rounded-full transition"
-                        >
-                          <FaStethoscope />
-                          <span>ManoMed-AI</span>
-                        </Link>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </header>
-            )}
+        <p
+          style={{
+            fontSize: "1.2rem",
+            color: "#a0f8ff",
+            textShadow: "0 0 8px #00eaff",
+          }}
+        >
+          We’re upgrading your experience.
+          <br />
+          Please come back soon.
+        </p>
 
-            {/* Main Content */}
-            <main className="pt-20">
-              {children}
-            </main>
+        <p
+          style={{
+            marginTop: "1.5rem",
+            fontSize: "1rem",
+            opacity: 0.8,
+          }}
+        >
+          — ManoMed AI
+        </p>
+      </div>
 
-            {/* Footer */}
-            <footer className="mt-12 py-6 bg-gray-100 dark:bg-gray-900 text-center text-sm text-gray-600 dark:text-gray-400">
-              © 2025 ManoMed AI. All rights reserved.
-            </footer>
+      <style>{`
+        @keyframes pulseGlow {
+          0% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.25); }
+          50% { box-shadow: 0 0 40px rgba(0, 255, 255, 0.6); }
+          100% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.25); }
+        }
 
-            <Toaster />
-            <Analytics />
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+        @keyframes floatWrench {
+          0% { transform: translateY(0); }
+          50% { transform: translateY(-12px); }
+          100% { transform: translateY(0); }
+        }
+
+        @keyframes spinLoader {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
+    </main>
   );
 }
