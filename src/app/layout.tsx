@@ -22,7 +22,7 @@ import {
 import { useState } from 'react';
 
 // Toggle this flag to hide/show navigation
-const COMING_SOON_MODE = false;
+const COMING_SOON_MODE = true;
 
 const inter = Inter({ subsets: ['latin'] });
 
