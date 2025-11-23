@@ -1,33 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
-export default function ComingSoon() {
-  const launchDate = new Date("2025-06-01T00:00:00+03:00").getTime();
-
-  const [timeLeft, setTimeLeft] = useState(getTimeLeft());
-
-  function getTimeLeft() {
-    const now = new Date().getTime();
-    const diff = launchDate - now;
-
-    return diff > 0
-      ? {
-          days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((diff / (1000 * 60)) % 60),
-          seconds: Math.floor((diff / 1000) % 60),
-        }
-      : null;
-  }
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(getTimeLeft());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
+export default function UnderMaintenance() {
   return (
     <main
       style={{
@@ -36,7 +9,7 @@ export default function ComingSoon() {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        background: "none", // removed background
+        background: "none",
         color: "#fff",
         fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
         padding: "1rem",
@@ -50,49 +23,21 @@ export default function ComingSoon() {
           textShadow: "0 0 10px #00f0ff",
         }}
       >
-        🚀 Launching Soon 🚀
+        🛠️ Under Maintenance 🛠️
       </h1>
 
-      {timeLeft ? (
-        <div
-          style={{
-            display: "flex",
-            gap: "1rem",
-            fontSize: "clamp(1.2rem, 5vw, 2rem)",
-            fontWeight: "700",
-            textShadow: "0 0 5px #00f0ff",
-            flexWrap: "wrap",
-            justifyContent: "center",
-          }}
-          aria-label="Countdown timer"
-        >
-          {["days", "hours", "minutes", "seconds"].map((unit) => (
-            <div
-              key={unit}
-              style={{
-                minWidth: "60px",
-                padding: "0.5rem 1rem",
-                backgroundColor: "rgba(0, 0, 0, 0.3)",
-                borderRadius: "8px",
-                userSelect: "none",
-              }}
-            >
-              <div>{(timeLeft as any)[unit]}</div>
-              <small
-                style={{
-                  fontSize: "0.8rem",
-                  textTransform: "capitalize",
-                  color: "#a0e7ff",
-                }}
-              >
-                {unit}
-              </small>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p style={{ fontSize: "1.5rem", marginTop: "1rem" }}>We are live! 🎉</p>
-      )}
+      <p
+        style={{
+          fontSize: "clamp(1.2rem, 5vw, 1.8rem)",
+          marginTop: "1rem",
+          maxWidth: "400px",
+          color: "#a0e7ff",
+        }}
+      >
+        We’re currently performing some upgrades.
+        <br />
+        Please check back soon.
+      </p>
 
       <p
         style={{
@@ -101,9 +46,7 @@ export default function ComingSoon() {
           maxWidth: "320px",
         }}
       >
-        Stay tuned for something awesome.
-        <br />
-        — ManoMed AI Launch
+        — ManoMed AI
       </p>
     </main>
   );
