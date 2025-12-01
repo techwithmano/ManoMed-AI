@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next';
 
 // Toggle the Coming Soon redirect on/off
-const enableComingSoonRedirect = false;
+const enableComingSoonRedirect = true;
 
 const nextConfig: NextConfig = {
   typescript: {
